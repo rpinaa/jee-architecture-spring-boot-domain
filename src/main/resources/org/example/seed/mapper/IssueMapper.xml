@@ -1,0 +1,18 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.seed.mapper.IssueMapper">
+    <resultMap id="momentumResult" type="Momentum">
+        <result property="registerDate" column="register_date" javaType="Date"/>
+        <result property="changeDate" column="change_date" javaType="Date"/>
+    </resultMap>
+    <resultMap id="issueResult" type="Issue" extends="momentumResult">
+        <id property="id" column="id" javaType="Long"/>
+        <result property="title" column="title" javaType="String"/>
+        <result property="description" column="description" javaType="String"/>
+        <result property="type" column="type" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="priority" column="priority" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="status" column="status" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+    </resultMap>
+</mapper>
