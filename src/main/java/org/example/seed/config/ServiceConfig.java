@@ -6,9 +6,11 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by Ricardo Pina Arellano on 24/11/2016.
@@ -22,14 +24,19 @@ public class ServiceConfig implements AsyncConfigurer {
     public Executor getAsyncExecutor() {
         final ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 
-        taskExecutor.setMaxPoolSize(20);
-        taskExecutor.setCorePoolSize(5);
-        taskExecutor.setQueueCapacity(25);
+        taskExecutor.setMaxPoolSize(30);
+        taskExecutor.setCorePoolSize(10);
+        taskExecutor.setQueueCapacity(30);
         taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+        taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 
         taskExecutor.initialize();
 
-        return taskExecutor;
+        final ConcurrentTaskExecutor concurrentTaskExecutor = new ConcurrentTaskExecutor();
+
+        concurrentTaskExecutor.setConcurrentExecutor(taskExecutor);
+
+        return concurrentTaskExecutor;
     }
 
     @Override

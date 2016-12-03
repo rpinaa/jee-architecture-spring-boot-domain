@@ -1,12 +1,15 @@
 package org.example.seed.rest.api;
 
 import org.example.seed.event.issue.*;
+import org.example.seed.group.issue.IssueCreateGroup;
+import org.example.seed.group.issue.IssueUpdateGroup;
 import org.example.seed.service.IssueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.Callable;
@@ -41,7 +44,7 @@ public class IssueRestController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Callable<ResponseIssueEvent> createIssue(@RequestBody final CreateIssueEvent issueEvent) {
+    public Callable<ResponseIssueEvent> createIssue(@RequestBody @Validated(value = {IssueCreateGroup.class}) final CreateIssueEvent issueEvent) {
 
         this.logger.info("> createIssue");
 
@@ -68,7 +71,7 @@ public class IssueRestController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public Callable<ResponseIssueEvent> updateIssue(@RequestBody final UpdateIssueEvent issueEvent) {
+    public Callable<ResponseIssueEvent> updateIssue(@RequestBody @Validated(value = {IssueUpdateGroup.class}) final UpdateIssueEvent issueEvent) {
 
         this.logger.info("> updateIssue");
 

@@ -3,6 +3,10 @@ package org.example.seed.event.issue;
 import lombok.*;
 import org.example.seed.domain.Issue;
 import org.example.seed.event.CreateEvent;
+import org.example.seed.group.issue.IssueCreateGroup;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Ricardo Pina Arellano on 30/11/2016.
@@ -13,5 +17,8 @@ import org.example.seed.event.CreateEvent;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class CreateIssueEvent extends CreateEvent {
+
+    @Valid
+    @NotNull(groups = {IssueCreateGroup.class})
     private Issue issue;
 }
