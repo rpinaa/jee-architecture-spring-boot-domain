@@ -44,11 +44,11 @@ public class IssueRestController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Callable<ResponseIssueEvent> createIssue(@RequestBody @Validated(value = {IssueCreateGroup.class}) final CreateIssueEvent issueEvent) {
+    public Callable<ResponseIssueEvent> createIssue(@RequestBody @Validated(value = {IssueCreateGroup.class}) final CreateIssueEvent issueEvent) throws ExecutionException, InterruptedException {
 
         this.logger.info("> createIssue");
 
-        final ResponseIssueEvent responseIssueEvent = this.issueService.createIssue(issueEvent);
+        final ResponseIssueEvent responseIssueEvent = this.issueService.createIssue(issueEvent).get();
 
         this.logger.info("< createIssue");
 
@@ -62,6 +62,7 @@ public class IssueRestController {
         this.logger.info("> getIssue");
 
         final RequestIssueEvent requestIssueEvent = RequestIssueEvent.builder().id(id).build();
+
         final ResponseIssueEvent responseIssueEvent = this.issueService.requestIssue(requestIssueEvent).get();
 
         this.logger.info("< getIssue");
@@ -71,11 +72,11 @@ public class IssueRestController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public Callable<ResponseIssueEvent> updateIssue(@RequestBody @Validated(value = {IssueUpdateGroup.class}) final UpdateIssueEvent issueEvent) {
+    public Callable<ResponseIssueEvent> updateIssue(@RequestBody @Validated(value = {IssueUpdateGroup.class}) final UpdateIssueEvent issueEvent) throws ExecutionException, InterruptedException {
 
         this.logger.info("> updateIssue");
 
-        final ResponseIssueEvent updateIssueEvent = this.issueService.updateIssue(issueEvent);
+        final ResponseIssueEvent updateIssueEvent = this.issueService.updateIssue(issueEvent).get();
 
         this.logger.info("< updateIssue");
 
@@ -89,6 +90,7 @@ public class IssueRestController {
         this.logger.info("> deleteIssue");
 
         final DeleteIssueEvent deleteIssueEvent = DeleteIssueEvent.builder().id(id).build();
+
         this.issueService.deleteIssue(deleteIssueEvent);
 
         this.logger.info("< deleteIssue");

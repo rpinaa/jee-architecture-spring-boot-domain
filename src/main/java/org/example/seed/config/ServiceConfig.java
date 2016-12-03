@@ -25,7 +25,7 @@ public class ServiceConfig implements AsyncConfigurer {
         final ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 
         taskExecutor.setMaxPoolSize(30);
-        taskExecutor.setCorePoolSize(10);
+        taskExecutor.setCorePoolSize(5);
         taskExecutor.setQueueCapacity(30);
         taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());

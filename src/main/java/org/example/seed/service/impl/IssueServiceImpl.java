@@ -44,9 +44,10 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    @Async
     @CacheEvict(value = "issues", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public ResponseIssueEvent createIssue(final CreateIssueEvent createIssueEvent) {
+    public Future<ResponseIssueEvent> createIssue(final CreateIssueEvent createIssueEvent) {
 
         this.logger.info("> create");
 
@@ -62,7 +63,7 @@ public class IssueServiceImpl implements IssueService {
 
         this.logger.info("< create");
 
-        return ResponseIssueEvent.builder().issue(issue).build();
+        return new AsyncResult<>(ResponseIssueEvent.builder().issue(issue).build());
     }
 
     @Override
@@ -81,9 +82,10 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    @Async
     @CacheEvict(value = "issues", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public ResponseIssueEvent updateIssue(final UpdateIssueEvent updateIssueEvent) {
+    public Future<ResponseIssueEvent> updateIssue(final UpdateIssueEvent updateIssueEvent) {
 
         this.logger.info("> update");
 
@@ -91,10 +93,11 @@ public class IssueServiceImpl implements IssueService {
 
         this.logger.info("< update");
 
-        return ResponseIssueEvent.builder().issue(updatedIssue).build();
+        return new AsyncResult<>(ResponseIssueEvent.builder().issue(updatedIssue).build());
     }
 
     @Override
+    @Async
     @CacheEvict(value = "issues", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteIssue(final DeleteIssueEvent deleteIssueEvent) {
