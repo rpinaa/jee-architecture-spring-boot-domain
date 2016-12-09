@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
@@ -57,7 +58,7 @@ public class IssueRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Callable<ResponseIssueEvent> getIssue(@PathVariable("id") final Long id) throws ExecutionException, InterruptedException {
+    public Callable<ResponseIssueEvent> getIssue(@PathVariable("id") final UUID id) throws ExecutionException, InterruptedException {
 
         this.logger.info("> getIssue");
 
@@ -85,7 +86,7 @@ public class IssueRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteIssue(@PathVariable("id") final Long id) {
+    public void deleteIssue(@PathVariable("id") final UUID id) {
 
         this.logger.info("> deleteIssue");
 
