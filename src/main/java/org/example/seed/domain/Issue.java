@@ -2,7 +2,6 @@ package org.example.seed.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.example.seed.catalog.IssuePriority;
 import org.example.seed.catalog.IssueStatus;
 import org.example.seed.catalog.IssueType;
@@ -12,14 +11,18 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Issue extends Momentum {
 
+    public Issue() {
+        this.id = UUID.randomUUID();
+    }
+
     @NotNull(groups = {IssueUpdateGroup.class})
-    private Long id;
+    private UUID id;
 
     @Size(min = 3, max = 80, groups = {IssueCreateGroup.class, IssueUpdateGroup.class})
     @NotEmpty(groups = {IssueCreateGroup.class, IssueUpdateGroup.class})
