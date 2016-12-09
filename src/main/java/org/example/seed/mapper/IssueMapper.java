@@ -2,6 +2,10 @@ package org.example.seed.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.example.seed.domain.Issue;
+import org.example.seed.event.issue.CreateIssueEvent;
+import org.example.seed.event.issue.DeleteIssueEvent;
+import org.example.seed.event.issue.RequestIssueEvent;
+import org.example.seed.event.issue.UpdateIssueEvent;
 
 import java.util.List;
 
@@ -11,13 +15,13 @@ import java.util.List;
 @Mapper
 public interface IssueMapper {
 
-    Issue createIssue(final Issue issue);
+    int createIssue(final CreateIssueEvent createIssueEvent);
 
     List<Issue> findAllIssues();
 
-    Issue findIssueById(final Long id);
+    Issue findIssueById(final RequestIssueEvent requestIssueEvent);
 
-    Issue saveIssue(final Issue issue);
+    int saveIssue(final UpdateIssueEvent updateIssueEvent);
 
-    void deleteIssue(final Long id);
+    int deleteIssue(final DeleteIssueEvent id);
 }
