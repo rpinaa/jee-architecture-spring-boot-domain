@@ -51,19 +51,17 @@ public class IssueServiceImpl implements IssueService {
 
         this.logger.info("> create");
 
-        Issue issue = createIssueEvent.getIssue();
+        createIssueEvent.getIssue().setStatus(IssueStatus.OPEN);
 
-        issue.setStatus(IssueStatus.OPEN);
-
-        if (issue.getPriority() == null) {
-            issue.setPriority(IssuePriority.MEDIUM);
+        if (createIssueEvent.getIssue().getPriority() == null) {
+            createIssueEvent.getIssue().setPriority(IssuePriority.MEDIUM);
         }
 
-        issue = this.issueMapper.createIssue(issue);
+        this.issueMapper.createIssue(createIssueEvent);
 
         this.logger.info("< create");
 
-        return new AsyncResult<>(ResponseIssueEvent.builder().issue(issue).build());
+        return new AsyncResult<>(null);
     }
 
     @Override
@@ -74,7 +72,7 @@ public class IssueServiceImpl implements IssueService {
 
         this.logger.info("> find");
 
-        final Issue issue = this.issueMapper.findIssueById(requestIssueEvent.getId());
+        final Issue issue = this.issueMapper.findIssueById(requestIssueEvent);
 
         this.logger.info("< find");
 
@@ -89,11 +87,11 @@ public class IssueServiceImpl implements IssueService {
 
         this.logger.info("> update");
 
-        final Issue updatedIssue = this.issueMapper.saveIssue(updateIssueEvent.getIssue());
+        this.issueMapper.saveIssue(updateIssueEvent);
 
         this.logger.info("< update");
 
-        return new AsyncResult<>(ResponseIssueEvent.builder().issue(updatedIssue).build());
+        return new AsyncResult<>(null);
     }
 
     @Override
@@ -104,7 +102,7 @@ public class IssueServiceImpl implements IssueService {
 
         this.logger.info("> delete");
 
-        this.issueMapper.deleteIssue(deleteIssueEvent.getId());
+        this.issueMapper.deleteIssue(deleteIssueEvent);
 
         this.logger.info("< delete");
     }
