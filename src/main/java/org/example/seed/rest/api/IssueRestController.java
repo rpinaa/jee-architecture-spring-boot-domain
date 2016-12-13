@@ -34,7 +34,7 @@ public class IssueRestController {
 
         this.logger.info("> getAllIssues");
 
-        this.counterService.increment("services.issues.findAll.invoke");
+        this.counterService.increment("services.issues.getAllIssues.invoke");
 
         final CatalogIssueEvent catalogIssueEvent = this.issueService.requestAllIssues().get();
 

@@ -34,11 +34,11 @@ public class IssueServiceImpl implements IssueService {
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Future<CatalogIssueEvent> requestAllIssues() {
 
-        this.logger.info("> findAll");
+        this.logger.info("> requestAllIssues");
 
         List<Issue> issues = this.issueMapper.findAllIssues();
 
-        this.logger.info("< findAll");
+        this.logger.info("< requestAllIssues");
 
         return new AsyncResult<>(CatalogIssueEvent.builder().issues(issues).build());
     }
@@ -49,7 +49,7 @@ public class IssueServiceImpl implements IssueService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Future<ResponseIssueEvent> createIssue(final CreateIssueEvent createIssueEvent) {
 
-        this.logger.info("> create");
+        this.logger.info("> createIssue");
 
         createIssueEvent.getIssue().setStatus(IssueStatus.OPEN);
 
@@ -59,7 +59,7 @@ public class IssueServiceImpl implements IssueService {
 
         this.issueMapper.createIssue(createIssueEvent);
 
-        this.logger.info("< create");
+        this.logger.info("< createIssue");
 
         return new AsyncResult<>(null);
     }
@@ -70,11 +70,11 @@ public class IssueServiceImpl implements IssueService {
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Future<ResponseIssueEvent> requestIssue(final RequestIssueEvent requestIssueEvent) {
 
-        this.logger.info("> find");
+        this.logger.info("> requestIssue");
 
         final Issue issue = this.issueMapper.findIssueById(requestIssueEvent);
 
-        this.logger.info("< find");
+        this.logger.info("< requestIssue");
 
         return new AsyncResult<>(ResponseIssueEvent.builder().issue(issue).build());
     }
@@ -85,11 +85,11 @@ public class IssueServiceImpl implements IssueService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Future<ResponseIssueEvent> updateIssue(final UpdateIssueEvent updateIssueEvent) {
 
-        this.logger.info("> update");
+        this.logger.info("> updateIssue");
 
         this.issueMapper.saveIssue(updateIssueEvent);
 
-        this.logger.info("< update");
+        this.logger.info("< updateIssue");
 
         return new AsyncResult<>(null);
     }
@@ -100,10 +100,10 @@ public class IssueServiceImpl implements IssueService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteIssue(final DeleteIssueEvent deleteIssueEvent) {
 
-        this.logger.info("> delete");
+        this.logger.info("> deleteIssue");
 
         this.issueMapper.deleteIssue(deleteIssueEvent);
 
-        this.logger.info("< delete");
+        this.logger.info("< deleteIssue");
     }
 }
