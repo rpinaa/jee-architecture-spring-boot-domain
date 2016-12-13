@@ -6,8 +6,8 @@
 
     <!-- Results -->
     <resultMap id="momentumResult" type="Momentum">
-        <result property="registerDate" column="register_date" javaType="Date"/>
-        <result property="changeDate" column="change_date" javaType="Date"/>
+        <result property="registerDate" column="register_date" javaType="Date" jdbcType="TIMESTAMP"/>
+        <result property="changeDate" column="change_date" javaType="Date" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <resultMap id="issueResult" type="Issue" extends="momentumResult">
@@ -17,8 +17,6 @@
         <result property="type" column="type" jdbcType="OTHER" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
         <result property="priority" column="priority" jdbcType="OTHER" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
         <result property="status" column="status" jdbcType="OTHER" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
-        <result property="registerDate" column="register_date" javaType="Date" jdbcType="DATE"/>
-        <result property="changeDate" column="change_date" javaType="Date" jdbcType="DATE"/>
     </resultMap>
 
     <!-- SQL Queries -->
