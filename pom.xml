@@ -5,6 +5,14 @@
 	<artifactId>issue-tracker-ws</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
+    <name>baas-spring-boot-mybatis-seed</name>
+    <description/>
+    <url/>
+    <organization>
+        <name/>
+        <url/>
+    </organization>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
