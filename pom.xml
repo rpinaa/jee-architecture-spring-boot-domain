@@ -5,7 +5,7 @@
 	<artifactId>issue-tracker-ws</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
-    <name>baas-spring-boot-mybatis-seed</name>
+    <name>jee-architecture-spring-boot-domain</name>
     <description/>
     <url/>
     <organization>

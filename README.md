@@ -1,2 +1,2 @@
-# baas-spring-mybatis-seed
-Backend as a Service seed with Spring Boot, Spring Security, MyBatis, Domain and Mapper by XML
+# jee-architecture-spring-boot-domain
+JEE Architecture seed with Spring Boot, Spring Security, MyBatis and Domain Layer
