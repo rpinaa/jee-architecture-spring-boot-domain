@@ -11,6 +11,7 @@ import org.example.seed.group.issue.IssueUpdateGroup;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Ricardo Pina Arellano on 30/11/2016.
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class UpdateIssueEvent extends UpdateEvent {
 
     @Valid

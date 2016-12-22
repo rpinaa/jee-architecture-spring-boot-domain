@@ -11,10 +11,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@XmlRootElement
 public class Issue extends Momentum {
 
     public Issue() {
