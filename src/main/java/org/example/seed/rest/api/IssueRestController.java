@@ -30,13 +30,18 @@ public class IssueRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Callable<CatalogIssueEvent> getAllIssues() throws ExecutionException, InterruptedException {
+    public Callable<CatalogIssueEvent> getAllIssues(@RequestParam("numberPage") final int numberPage, @RequestParam("recordsPerPage") final int recordsPerPage) throws ExecutionException, InterruptedException {
 
         this.logger.info("> getAllIssues");
 
         this.counterService.increment("services.issues.getAllIssues.invoke");
 
-        final CatalogIssueEvent catalogIssueEvent = this.issueService.requestAllIssues().get();
+        final RequestAllIssueEvent requestAllIssueEvent = RequestAllIssueEvent.builder()
+                .numberPage(numberPage)
+                .recordsPerPage(recordsPerPage)
+                .build();
+
+        final CatalogIssueEvent catalogIssueEvent = this.issueService.requestAllIssues(requestAllIssueEvent).get();
 
         this.logger.info("< getAllIssues");
 
