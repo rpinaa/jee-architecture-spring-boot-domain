@@ -1,6 +1,7 @@
 package org.example.seed.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 import org.example.seed.domain.Issue;
 import org.example.seed.event.issue.CreateIssueEvent;
 import org.example.seed.event.issue.DeleteIssueEvent;
@@ -17,7 +18,9 @@ public interface IssueMapper {
 
     int createIssue(final CreateIssueEvent createIssueEvent);
 
-    List<Issue> findAllIssues();
+    long countAllIssues();
+
+    List<Issue> findAllIssues(final RowBounds rb);
 
     Issue findIssueById(final RequestIssueEvent requestIssueEvent);
 

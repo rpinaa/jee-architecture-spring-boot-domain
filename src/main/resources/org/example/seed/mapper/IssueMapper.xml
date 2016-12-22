@@ -24,6 +24,10 @@
         SELECT * FROM ISSUE
     </select>
 
+    <select id="countAllIssues" resultType="long">
+        SELECT COUNT(*) FROM ISSUE
+    </select>
+
     <select id="findIssueById" resultMap="issueResult" parameterType="RequestIssueEvent">
         SELECT * FROM ISSUE WHERE id = #{id}
     </select>
