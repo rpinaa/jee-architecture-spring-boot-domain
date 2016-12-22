@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by Ricardo Pina Arellano on 20/12/2016.
  */
-@XmlRootElement
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class RequestAllIssueEvent {
 
     private int numberPage;
