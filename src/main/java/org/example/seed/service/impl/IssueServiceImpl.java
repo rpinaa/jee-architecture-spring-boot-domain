@@ -1,5 +1,6 @@
 package org.example.seed.service.impl;
 
+import org.apache.ibatis.session.RowBounds;
 import org.example.seed.catalog.IssuePriority;
 import org.example.seed.catalog.IssueStatus;
 import org.example.seed.domain.Issue;
@@ -32,15 +33,19 @@ public class IssueServiceImpl implements IssueService {
     @Async
     @Cacheable(value = "issues")
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<CatalogIssueEvent> requestAllIssues() {
+    public Future<CatalogIssueEvent> requestAllIssues(final RequestAllIssueEvent requestAllIssueEvent) {
 
         this.logger.info("> requestAllIssues");
 
-        List<Issue> issues = this.issueMapper.findAllIssues();
+        final int offset = (requestAllIssueEvent.getNumberPage() - 1) * requestAllIssueEvent.getRecordsPerPage();
+        final int limit = requestAllIssueEvent.getNumberPage()*requestAllIssueEvent.getRecordsPerPage();
+
+        List<Issue> issues = this.issueMapper.findAllIssues(new RowBounds(offset, limit));
+        long total = this.issueMapper.countAllIssues();
 
         this.logger.info("< requestAllIssues");
 
-        return new AsyncResult<>(CatalogIssueEvent.builder().issues(issues).build());
+        return new AsyncResult<>(CatalogIssueEvent.builder().issues(issues).total(total).build());
     }
 
     @Override

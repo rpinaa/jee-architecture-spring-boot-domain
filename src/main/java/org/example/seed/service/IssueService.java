@@ -6,7 +6,7 @@ import java.util.concurrent.Future;
 
 public interface IssueService {
 
-    Future<CatalogIssueEvent> requestAllIssues();
+    Future<CatalogIssueEvent> requestAllIssues(final RequestAllIssueEvent requestAllIssueEvent);
 
     Future<ResponseIssueEvent> createIssue(final CreateIssueEvent createIssueEvent);
 
