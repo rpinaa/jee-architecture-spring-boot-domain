@@ -12,4 +12,5 @@ Servers/
 *.iml
 *.idea
 *.log
+/logs
 *.swp
