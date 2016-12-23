@@ -1,0 +1,126 @@
+spring:
+  datasource:
+    schema: classpath*:schema.sql
+
+mybatis:
+  typeAliasesPackage: org.example.seed.domain,org.example.seed.event
+  typeHandlersPackage: org.example.seed.mapper.handler
+  mapperLocations: classpath*:**/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 30
+    defaultExecutorType: REUSE
+
+management:
+  context-path: /actuators
+
+info:
+  app:
+    name: jee-architecture-spring-boot-domain
+    description: Issue REST API
+    version: 1.0.0
+
+server:
+  port: 28080
+  connection-timeout: 12000
+  compression:
+    enabled: true
+
+logging:
+  level:
+    org:
+      mybatis: DEBUG
+      springframework:
+        beans: DEBUG
+        context: DEBUG
+        core: DEBUG
+        transaction: DEBUG
+        web: DEBUG
+
+---
+
+spring:
+  profiles: ft
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/issuetracker
+    schema: classpath*:schema.sql
+    username: root
+    password:
+
+mybatis:
+  typeAliasesPackage: org.example.seed.domain,org.example.seed.event
+  typeHandlersPackage: org.example.seed.mapper.handler
+  mapperLocations: classpath*:**/mapper/*.xml
+
+
+
+management:
+  context-path: /actuators
+
+info:
+  app:
+    name: jee-architecture-spring-boot-domain
+    description: Issue REST API
+    version: 1.0.0
+
+server:
+  port: 8585
+  connection-timeout: 12000
+  compression:
+    enabled: true
+
+logging:
+  level:
+    org:
+      mybatis: DEBUG
+      springframework:
+        beans: DEBUG
+        context: DEBUG
+        core: DEBUG
+        transaction: DEBUG
+        web: DEBUG
+
+---
+
+spring:
+  profiles: pd
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/issuetracker
+    schema: classpath*:schema.sql
+    username: root
+    password:
+
+mybatis:
+  typeAliasesPackage: org.example.seed.domain,org.example.seed.event
+  typeHandlersPackage: org.example.seed.mapper.handler
+  mapperLocations: classpath*:**/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 30
+    defaultExecutorType: REUSE
+
+management:
+  context-path: /actuators
+
+info:
+  app:
+    name: jee-architecture-spring-boot-domain
+    description: Issue REST API
+    version: 1.0.0
+
+server:
+  port: 8080
+  connection-timeout: 12000
+  compression:
+    enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        controller: DEBUG
+        transaction: ERROR
+        web: INFO
+      mybatis: ERROR
