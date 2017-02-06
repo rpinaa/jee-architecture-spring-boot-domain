@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by Ricardo Pina Arellano on 06/02/2017.
  */
+@RequestMapping(path = "/issues")
 public interface IssueRest {
 
     @RequestMapping(method = RequestMethod.GET)
