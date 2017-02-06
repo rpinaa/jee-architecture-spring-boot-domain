@@ -1,14 +1,12 @@
-package org.example.seed.rest.api;
+package org.example.seed.rest.impl;
 
 import org.example.seed.event.issue.*;
 import org.example.seed.group.issue.IssueCreateGroup;
 import org.example.seed.group.issue.IssueUpdateGroup;
+import org.example.seed.rest.IssueRest;
 import org.example.seed.service.IssueService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(path = "/issues")
-public class IssueRestController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+public class IssueRestImpl implements IssueRest {
 
     @Autowired
     private IssueService issueService;
@@ -28,11 +24,7 @@ public class IssueRestController {
     @Autowired
     private CounterService counterService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
     public Callable<CatalogIssueEvent> getAllIssues(@RequestParam("numberPage") final int numberPage, @RequestParam("recordsPerPage") final int recordsPerPage) throws ExecutionException, InterruptedException {
-
-        this.logger.info("> getAllIssues");
 
         this.counterService.increment("services.issues.getAllIssues.invoke");
 
@@ -43,62 +35,36 @@ public class IssueRestController {
 
         final CatalogIssueEvent catalogIssueEvent = this.issueService.requestAllIssues(requestAllIssueEvent).get();
 
-        this.logger.info("< getAllIssues");
-
         return () -> catalogIssueEvent;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     public Callable<ResponseIssueEvent> createIssue(@RequestBody @Validated(value = {IssueCreateGroup.class}) final CreateIssueEvent issueEvent) throws ExecutionException, InterruptedException {
 
-        this.logger.info("> createIssue");
-
         final ResponseIssueEvent responseIssueEvent = this.issueService.createIssue(issueEvent).get();
-
-        this.logger.info("< createIssue");
 
         return () -> responseIssueEvent;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
     public Callable<ResponseIssueEvent> getIssue(@PathVariable("id") final UUID id) throws ExecutionException, InterruptedException {
-
-        this.logger.info("> getIssue");
 
         final RequestIssueEvent requestIssueEvent = RequestIssueEvent.builder().id(id).build();
 
         final ResponseIssueEvent responseIssueEvent = this.issueService.requestIssue(requestIssueEvent).get();
 
-        this.logger.info("< getIssue");
-
         return () -> responseIssueEvent;
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
     public Callable<ResponseIssueEvent> updateIssue(@RequestBody @Validated(value = {IssueUpdateGroup.class}) final UpdateIssueEvent issueEvent) throws ExecutionException, InterruptedException {
 
-        this.logger.info("> updateIssue");
-
         final ResponseIssueEvent updateIssueEvent = this.issueService.updateIssue(issueEvent).get();
-
-        this.logger.info("< updateIssue");
 
         return () -> updateIssueEvent;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteIssue(@PathVariable("id") final UUID id) {
-
-        this.logger.info("> deleteIssue");
 
         final DeleteIssueEvent deleteIssueEvent = DeleteIssueEvent.builder().id(id).build();
 
         this.issueService.deleteIssue(deleteIssueEvent);
-
-        this.logger.info("< deleteIssue");
     }
 }
