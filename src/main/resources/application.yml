@@ -57,6 +57,10 @@ mybatis:
   typeAliasesPackage: org.example.seed.domain,org.example.seed.event
   typeHandlersPackage: org.example.seed.mapper.handler
   mapperLocations: classpath*:**/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 30
+    defaultExecutorType: REUSE
 
 management:
   context-path: /actuators
