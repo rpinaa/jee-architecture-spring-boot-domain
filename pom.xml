@@ -20,7 +20,13 @@
 	</parent>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.filterLevel>.</project.build.filterLevel>
+        <project.build.environment>dv</project.build.environment>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.resourcesDirectory>${basedir}/src/main/resources</project.build.resourcesDirectory>
+        <project.build.testResourcesDirectory>${basedir}/src/test/resources</project.build.testResourcesDirectory>
+        <project.build.filterDirectory>${basedir}/${project.build.filterLevel}/filters</project.build.filterDirectory>
+
 		<java.version>1.8</java.version>
         <lombok.version>1.16.10</lombok.version>
         <mybatis.version>1.1.1</mybatis.version>
@@ -67,6 +73,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -85,12 +96,79 @@
 		</dependency>
 	</dependencies>
 
+    <profiles>
+        <profile>
+            <id>dv</id>
+
+            <properties>
+                <project.build.environment>dv</project.build.environment>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>st</id>
+
+            <properties>
+                <project.build.environment>st</project.build.environment>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>pd</id>
+
+            <properties>
+                <project.build.environment>pd</project.build.environment>
+            </properties>
+        </profile>
+    </profiles>
+
 	<build>
+        <finalName>app</finalName>
+        <filters>
+            <filter>${project.build.filterDirectory}/${project.build.environment}.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>${project.build.resourcesDirectory}</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>${project.build.testResourcesDirectory}</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.p12</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>${project.build.testResourcesDirectory}</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.p12</include>
+                </includes>
+            </testResource>
+        </testResources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>
