@@ -18,21 +18,21 @@ import java.util.concurrent.ExecutionException;
 public interface IssueRest {
 
     @GetMapping
-    public Callable<CatalogIssueEvent> getAllIssues(final int numberPage, final int recordsPerPage) throws ExecutionException, InterruptedException;
+    Callable<CatalogIssueEvent> getAllIssues(@RequestParam("numberPage") final int numberPage, @RequestParam("recordsPerPage") final int recordsPerPage) throws ExecutionException, InterruptedException;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public Callable<ResponseIssueEvent> createIssue(final CreateIssueEvent issueEvent) throws ExecutionException, InterruptedException;
+    Callable<ResponseIssueEvent> createIssue(final CreateIssueEvent issueEvent) throws ExecutionException, InterruptedException;
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Callable<ResponseIssueEvent> getIssue(final UUID id) throws ExecutionException, InterruptedException;
+    Callable<ResponseIssueEvent> getIssue(@PathVariable("id") final UUID id) throws ExecutionException, InterruptedException;
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public Callable<ResponseIssueEvent> updateIssue(final UpdateIssueEvent issueEvent) throws ExecutionException, InterruptedException;
+    Callable<ResponseIssueEvent> updateIssue(final UpdateIssueEvent issueEvent) throws ExecutionException, InterruptedException;
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteIssue(final UUID id);
+    void deleteIssue(@PathVariable("id") final UUID id);
 }
