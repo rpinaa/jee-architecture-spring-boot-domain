@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.example.issuetracker</groupId>
-	<artifactId>jee-architecture-spring-boot-domain</artifactId>
-	<version>0.0.1</version>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.example.issuetracker</groupId>
+    <artifactId>jee-architecture-spring-boot-domain</artifactId>
+    <version>0.0.1</version>
 
     <name>jee-architecture-spring-boot-domain</name>
     <description/>
@@ -13,26 +13,29 @@
         <url/>
     </organization>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.2.RELEASE</version>
-	</parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.2.RELEASE</version>
+    </parent>
 
-	<properties>
-        <project.build.filterLevel>.</project.build.filterLevel>
+    <properties>
         <project.build.environment>dv</project.build.environment>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourcesDirectory>${basedir}/src/main/resources</project.build.resourcesDirectory>
         <project.build.testResourcesDirectory>${basedir}/src/test/resources</project.build.testResourcesDirectory>
-        <project.build.filterDirectory>${basedir}/${project.build.filterLevel}/filters</project.build.filterDirectory>
+        <project.build.filterDirectory>${basedir}/src/main/filters</project.build.filterDirectory>
+
         <start-class>org.example.seed.Application</start-class>
 
-		<java.version>1.8</java.version>
-        <mybatis.version>1.2.0</mybatis.version>
-	</properties>
+        <lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
+        <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
 
-	<dependencies>
+        <java.version>1.8</java.version>
+        <mybatis.version>1.2.0</mybatis.version>
+    </properties>
+
+    <dependencies>
         <!-- Spring Boot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -103,7 +106,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-	</dependencies>
+    </dependencies>
 
     <profiles>
         <profile>
@@ -134,7 +137,39 @@
         </profile>
     </profiles>
 
-	<build>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- This plugin's configuration is used to store Eclipse m2e
+                     settings only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>${lifecycle.mapping.version}</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>properties-maven-plugin</artifactId>
+                                        <versionRange>[${properties.maven.plugin.version},)</versionRange>
+                                        <goals>
+                                            <goal>read-project-properties</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+
         <finalName>app</finalName>
         <filters>
             <filter>${project.build.filterDirectory}/${project.build.environment}.properties</filter>
@@ -162,25 +197,34 @@
             </testResource>
         </testResources>
 
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+        <plugins>
+            <!-- Defining the plugin stack -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>${properties.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${project.build.filterDirectory}/${project.build.environment}.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
                 </configuration>
-			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <delimiters>
-                        <delimiter>@</delimiter>
-                    </delimiters>
-                    <useDefaultDelimiters>false</useDefaultDelimiters>
-                </configuration>
             </plugin>
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 </project>
