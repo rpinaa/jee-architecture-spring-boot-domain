@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 public interface IssueRest {
 
     @GetMapping
-    Callable<CatalogIssueEvent> getAllIssues(@RequestParam("numberPage") final int numberPage, @RequestParam("recordsPerPage") final int recordsPerPage) throws ExecutionException, InterruptedException;
+    Callable<CatalogIssueEvent> getAllIssues(final int numberPage, final int recordsPerPage) throws ExecutionException, InterruptedException;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
@@ -26,7 +26,7 @@ public interface IssueRest {
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    Callable<ResponseIssueEvent> getIssue(@PathVariable("id") final UUID id) throws ExecutionException, InterruptedException;
+    Callable<ResponseIssueEvent> getIssue(final UUID id) throws ExecutionException, InterruptedException;
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -34,5 +34,5 @@ public interface IssueRest {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteIssue(@PathVariable("id") final UUID id);
+    void deleteIssue(final UUID id);
 }

@@ -26,7 +26,7 @@ public class IssueRestImpl implements IssueRest {
     @Autowired
     private CounterService counterService;
 
-    public Callable<CatalogIssueEvent> getAllIssues(final int numberPage, final int recordsPerPage) throws ExecutionException, InterruptedException {
+    public Callable<CatalogIssueEvent> getAllIssues(@RequestParam("numberPage") final int numberPage, @RequestParam("recordsPerPage") final int recordsPerPage) throws ExecutionException, InterruptedException {
 
         this.counterService.increment("services.issues.getAllIssues.invoke");
 
@@ -47,7 +47,7 @@ public class IssueRestImpl implements IssueRest {
         return () -> responseIssueEvent;
     }
 
-    public Callable<ResponseIssueEvent> getIssue(final UUID id) throws ExecutionException, InterruptedException {
+    public Callable<ResponseIssueEvent> getIssue(@PathVariable("id") final UUID id) throws ExecutionException, InterruptedException {
 
         final RequestIssueEvent requestIssueEvent = RequestIssueEvent.builder().id(id).build();
 
@@ -63,7 +63,7 @@ public class IssueRestImpl implements IssueRest {
         return () -> updateIssueEvent;
     }
 
-    public void deleteIssue(final UUID id) {
+    public void deleteIssue(@PathVariable("id") final UUID id) {
 
         final DeleteIssueEvent deleteIssueEvent = DeleteIssueEvent.builder().id(id).build();
 
