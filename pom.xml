@@ -110,14 +110,22 @@
 
     <profiles>
         <profile>
+            <id>lc</id>
+
+            <properties>
+                <project.build.environment>lc</project.build.environment>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
             <id>dv</id>
 
             <properties>
                 <project.build.environment>dv</project.build.environment>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
 
         <profile>
