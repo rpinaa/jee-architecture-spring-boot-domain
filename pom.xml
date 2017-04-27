@@ -110,10 +110,10 @@
 
     <profiles>
         <profile>
-            <id>lc</id>
+            <id>local</id>
 
             <properties>
-                <project.build.environment>lc</project.build.environment>
+                <project.build.environment>local</project.build.environment>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -121,26 +121,26 @@
         </profile>
 
         <profile>
-            <id>dv</id>
+            <id>development</id>
 
             <properties>
-                <project.build.environment>dv</project.build.environment>
+                <project.build.environment>development</project.build.environment>
             </properties>
         </profile>
 
         <profile>
-            <id>st</id>
+            <id>staging</id>
 
             <properties>
-                <project.build.environment>st</project.build.environment>
+                <project.build.environment>staging</project.build.environment>
             </properties>
         </profile>
 
         <profile>
-            <id>pd</id>
+            <id>production</id>
 
             <properties>
-                <project.build.environment>pd</project.build.environment>
+                <project.build.environment>production</project.build.environment>
             </properties>
         </profile>
     </profiles>
