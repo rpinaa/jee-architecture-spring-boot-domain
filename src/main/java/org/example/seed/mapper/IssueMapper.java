@@ -7,6 +7,8 @@ import org.example.seed.event.issue.CreateIssueEvent;
 import org.example.seed.event.issue.DeleteIssueEvent;
 import org.example.seed.event.issue.RequestIssueEvent;
 import org.example.seed.event.issue.UpdateIssueEvent;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
  * Created by Ricardo Pina Arellano on 30/11/2016.
  */
 @Mapper
+@Repository
 public interface IssueMapper {
 
     @Insert("INSERT INTO ISSUE" +
