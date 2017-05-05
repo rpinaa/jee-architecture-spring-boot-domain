@@ -1,5 +1,5 @@
 # jee-architecture-spring-boot-domain
-JEE 7 non-blocking I/O Architecture seed using Spring Boot and Domain layer
+JEE 7 non-blocking I/O Architecture, using Spring Boot and Domain layer
 
 ## Requirements
 
@@ -8,6 +8,7 @@ JEE 7 non-blocking I/O Architecture seed using Spring Boot and Domain layer
 
 ## Stack
 
+- JSE 8
 - Spring Boot 1.x
 - Spring Boot Security 1.x
 - Spring Boot Actuator 1.x
