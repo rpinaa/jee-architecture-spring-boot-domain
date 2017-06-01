@@ -13,6 +13,34 @@
         <url/>
     </organization>
 
+    <developers>
+        <developer>
+            <id>rpinna</id>
+            <name>Ricardo Pina Arellano</name>
+            <email>pinaarellano00@gmail.com</email>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>Ricardo Pina Arellano</name>
+            <email>pinaarellano0@gmail.com</email>
+            <url>https://www.linkedin.com/in/ricardo-pina-arellano-a8918a4b/</url>
+            <roles>
+                <role>Technical lead</role>
+            </roles>
+            <timezone>GMT</timezone>
+        </contributor>
+    </contributors>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
