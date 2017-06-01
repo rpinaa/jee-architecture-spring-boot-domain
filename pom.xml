@@ -20,7 +20,7 @@
     </parent>
 
     <properties>
-        <project.build.environment>dv</project.build.environment>
+        <project.build.environment>local</project.build.environment>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourcesDirectory>${basedir}/src/main/resources</project.build.resourcesDirectory>
         <project.build.testResourcesDirectory>${basedir}/src/test/resources</project.build.testResourcesDirectory>
