@@ -1,17 +1,75 @@
-DROP TABLE IF EXISTS ISSUE;
+-- -----------------------------------------------------
+-- Table ACCOUNT
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `account` (
+  `id` VARCHAR(50) NOT NULL,
+  `first_name` VARCHAR(45) NULL,
+  `last_name` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `secret` BLOB NULL,
+  `create_date` DATE NULL,
+  `change_date` DATE NULL,
+  `deleted` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
-CREATE TABLE ISSUE (
-  id varchar(36) NOT NULL,
-  title varchar(100) NOT NULL,
-  description varchar(100) NOT NULL,
-  type varchar(10) DEFAULT NULL,
-  priority varchar(10) DEFAULT NULL,
-  status varchar(15) DEFAULT NULL,
-  register_date datetime DEFAULT NULL,
-  change_date datetime DEFAULT NULL,
-  PRIMARY KEY (id)
-);
+-- -----------------------------------------------------
+-- Table CHEF
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `chef` (
+  `id` VARCHAR(36) NOT NULL,
+  `status` VARCHAR(512) NULL,
+  `rfc` VARCHAR(45) NULL,
+  `curp` VARCHAR(45) NULL,
+  `rating` FLOAT NULL,
+  `create_date` DATE NULL,
+  `change_date` DATE NULL,
+  `deleted` bit(1) DEFAULT NULL,
+  `fk_id_account` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_chef_account`
+    FOREIGN KEY (`fk_id_account`)
+    REFERENCES `account` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-insert into ISSUE(id, title, description, type, priority, status, register_date, change_date) values('18b526ab-8021-11e6-ae2a-42010af00004', 'Service Error', 'Runtime error on service layer', 'BUG', 'MEDIUM', 'IN_PROGRESS', '2016-11-28 15:16:14', '2016-11-28 15:16:14');
-insert into ISSUE(id, title, description, type, priority, status, register_date, change_date) values('18b526ab-8021-11e6-ae2a-45010af00004', 'Logger Error', 'Runtime error on logger layer', 'BUG', 'HIGH', 'IN_PROGRESS', '2016-11-28 15:16:14', '2016-11-28 15:16:14');
-insert into ISSUE(id, title, description, type, priority, status, register_date, change_date) values('18b526ab-8021-11e6-ae2a-46010af00004', 'Core Error', 'Runtime error on core layer', 'BUG', 'HIGH', 'OPEN', '2016-11-28 15:16:14', '2016-11-28 15:16:14');
+-- -----------------------------------------------------
+-- Table TELEPHONE
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `telephone` (
+  `id` VARCHAR(36) NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `number` INT(11) NULL,
+  `lada` VARCHAR(45) NULL,
+  `type` VARCHAR(45) NULL,
+  `fk_id_chef` VARCHAR(512) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_telephones_chef`
+    FOREIGN KEY (`fk_id_chef`)
+    REFERENCES `chef` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table CLIENT
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `client` (
+  `id` VARCHAR(36) NOT NULL,
+  `status` VARCHAR(45) NULL,
+  `first_name` VARCHAR(45) NULL,
+  `last_name` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `rating` FLOAT NULL,
+  `create_date` DATE NULL,
+  `change_date` DATE NULL,
+  `deleted` bit(1) DEFAULT NULL,
+  `fk_id_telephone` VARCHAR(512) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_client_telephone`
+    FOREIGN KEY (`fk_id_telephone`)
+    REFERENCES `telephone` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
