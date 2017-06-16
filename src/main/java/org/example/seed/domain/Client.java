@@ -3,6 +3,7 @@ package org.example.seed.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.seed.group.client.ClientCreateGroup;
+import org.example.seed.group.client.ClientUpdateGroup;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ public class Client extends Dates {
         this.id = UUID.randomUUID();
     }
 
+    @NotNull(groups = {ClientUpdateGroup.class})
     private UUID id;
 
     @Email
