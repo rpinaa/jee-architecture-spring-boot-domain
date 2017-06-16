@@ -21,10 +21,10 @@ public interface AccountMapper {
             "VALUES(#{chef.account.id}, #{chef.account.firstName}, #{chef.account.lastName}, " +
             "#{chef.account.email}, NULL, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)")
     @Options(useGeneratedKeys = true)
-    int createAccount(final CreateChefEvent createChefEvent);
+    int createAccount(final CreateChefEvent chefEvent);
 
     @Select("SELECT account.id FROM account WHERE account.id IN (SELECT chef.fk_id_account FROM chef WHERE chef.id = #{id}) AND deleted = 0")
-    UUID findAccount(final RequestChefEvent requestChefEvent);
+    UUID findAccount(final RequestChefEvent chefEvent);
 
     @Update("UPDATE account SET" +
             "first_name = #{chef.account.firstName}, " +
@@ -32,7 +32,7 @@ public interface AccountMapper {
             "email = #{chef.account.email}," +
             "change_date = CURRENT_TIMESTAMP" +
             "WHERE account.id = #{chef.account.id}")
-    int updateAccount(final UpdateChefEvent updateChefEvent);
+    int updateAccount(final UpdateChefEvent chefEvent);
 
     @Update("UPDATE account SET deleted = 1, change_date = CURRENT_TIMESTAMP WHERE account.id = #{id}")
     int deleteAccount(final UUID id);

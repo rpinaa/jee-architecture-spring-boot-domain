@@ -37,10 +37,10 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @Cacheable(value = "chefs")
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent requestAllChefEvent) {
+    public Future<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent chefEvent) {
 
-        final int offset = (requestAllChefEvent.getPage() - 1) * requestAllChefEvent.getLimit();
-        final int limit = requestAllChefEvent.getPage() * requestAllChefEvent.getLimit();
+        final int offset = (chefEvent.getPage() - 1) * chefEvent.getLimit();
+        final int limit = chefEvent.getPage() * chefEvent.getLimit();
 
         final Set<Chef> chefs = this.chefMapper.findChefs(new RowBounds(offset, limit));
         final long total = this.chefMapper.countChefs();
@@ -52,13 +52,13 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @CacheEvict(value = "chefs", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> createChef(final CreateChefEvent createChefEvent) {
+    public Future<ResponseChefEvent> createChef(final CreateChefEvent chefEvent) {
 
-        createChefEvent.getChef().setStatus(ChefStatus.PRE_REGISTERED);
-        createChefEvent.getChef().setRating(0F);
+        chefEvent.getChef().setStatus(ChefStatus.PRE_REGISTERED);
+        chefEvent.getChef().setRating(0F);
 
-        this.accountMapper.createAccount(createChefEvent);
-        this.chefMapper.createChef(createChefEvent);
+        this.accountMapper.createAccount(chefEvent);
+        this.chefMapper.createChef(chefEvent);
 
         return new AsyncResult<>(null);
     }
@@ -67,9 +67,9 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @Cacheable(value = "chefs")
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<ResponseChefEvent> requestChef(final RequestChefEvent requestChefEvent) {
+    public Future<ResponseChefEvent> requestChef(final RequestChefEvent chefEvent) {
 
-        final Chef chef = this.chefMapper.findChef(requestChefEvent);
+        final Chef chef = this.chefMapper.findChef(chefEvent);
 
         return new AsyncResult<>(ResponseChefEvent.builder().chef(chef).build());
     }
@@ -78,35 +78,36 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @CacheEvict(value = "chefs", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> updateChef(final UpdateChefEvent updateChefEvent) {
+    public Future<ResponseChefEvent> updateChef(final UpdateChefEvent chefEvent) {
 
         final RequestChefEvent requestChefEvent = RequestChefEvent.builder()
-                .id(updateChefEvent.getChef().getId()).build();
+                .id(chefEvent.getChef().getId()).build();
 
         final Optional<UUID> uuid = Optional.of(this.accountMapper.findAccount(requestChefEvent));
 
         uuid.ifPresent(id -> {
-            updateChefEvent.getChef().getAccount().setId(id);
+            chefEvent.getChef().getAccount().setId(id);
 
-            this.accountMapper.updateAccount(updateChefEvent);
-            this.chefMapper.updateChef(updateChefEvent);
+            this.accountMapper.updateAccount(chefEvent);
+            this.chefMapper.updateChef(chefEvent);
         });
 
         return new AsyncResult<>(null);
     }
 
     @Override
+    @Async
     @CacheEvict(value = "chefs", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent deleteChefEvent) {
+    public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent chefEvent) {
 
         final RequestChefEvent requestChefEvent = RequestChefEvent.builder()
-                .id(deleteChefEvent.getId()).build();
+                .id(chefEvent.getId()).build();
 
         final Optional<UUID> uuid = Optional.of(this.accountMapper.findAccount(requestChefEvent));
 
         uuid.ifPresent(id -> {
-            this.chefMapper.deleteChef(deleteChefEvent);
+            this.chefMapper.deleteChef(chefEvent);
             this.accountMapper.deleteAccount(id);
         });
 

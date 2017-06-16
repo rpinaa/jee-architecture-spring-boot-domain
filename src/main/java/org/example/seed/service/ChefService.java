@@ -9,13 +9,13 @@ import java.util.concurrent.Future;
  */
 public interface ChefService {
 
-    Future<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent requestAllChefEvent);
+    Future<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent chefEvent);
 
-    Future<ResponseChefEvent> createChef(final CreateChefEvent createChefEvent);
+    Future<ResponseChefEvent> createChef(final CreateChefEvent chefEvent);
 
-    Future<ResponseChefEvent> requestChef(final RequestChefEvent requestChefEvent);
+    Future<ResponseChefEvent> requestChef(final RequestChefEvent chefEvent);
 
-    Future<ResponseChefEvent> updateChef(final UpdateChefEvent updateChefEvent);
+    Future<ResponseChefEvent> updateChef(final UpdateChefEvent chefEvent);
 
-    Future<ResponseChefEvent> deleteChef(final DeleteChefEvent deleteChefEvent);
+    Future<ResponseChefEvent> deleteChef(final DeleteChefEvent chefEvent);
 }

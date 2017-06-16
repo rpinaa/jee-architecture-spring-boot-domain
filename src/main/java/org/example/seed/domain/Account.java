@@ -3,6 +3,7 @@ package org.example.seed.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.seed.group.chef.ChefCreateGroup;
+import org.example.seed.group.chef.ChefUpdateGroup;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
@@ -25,14 +26,14 @@ public class Account extends Dates {
     private UUID id;
 
     @Email
-    @NotNull(groups = {ChefCreateGroup.class})
+    @NotNull(groups = {ChefCreateGroup.class, ChefUpdateGroup.class})
     private String email;
 
     @Size(min = 2, max = 80)
-    @NotNull(groups = {ChefCreateGroup.class})
+    @NotNull(groups = {ChefCreateGroup.class, ChefUpdateGroup.class})
     private String firstName;
 
     @Size(min = 2, max = 80)
-    @NotNull(groups = {ChefCreateGroup.class})
+    @NotNull(groups = {ChefCreateGroup.class, ChefUpdateGroup.class})
     private String lastName;
 }

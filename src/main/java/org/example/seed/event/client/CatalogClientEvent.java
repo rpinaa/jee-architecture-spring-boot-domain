@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.seed.domain.Client;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by PINA on 22/05/2017.
@@ -18,6 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CatalogClientEvent {
 
-    private int total;
-    private List<Client> clients;
+    private long total;
+    private Set<Client> clients;
 }
