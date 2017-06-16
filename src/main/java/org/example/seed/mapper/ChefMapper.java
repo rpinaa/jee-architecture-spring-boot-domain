@@ -35,11 +35,14 @@ public interface ChefMapper {
     })
     Set<Chef> findAllChefs(final RowBounds rb);
 
+    @Select("SELECT * FROM chef WHERE chef.id = #{id}")
+    @Results(value = {
+            @Result(property = "account", column = "fk_id_account", one = @One(select = "findAccount"))
+    })
+    Chef findChefById(final RequestChefEvent requestChefEvent);
+
     @Select("SELECT * FROM account WHERE account.id = #{id}")
     Account findAccount(final String id);
-
-    @Select("SELECT * FROM chef WHERE id = #{requestChefEvent.id}")
-    Chef findChefById(final RequestChefEvent requestChefEvent);
 
     @Update("UPDATE chef SET" +
             "rfc = #{chef.rfc}, " +
@@ -47,9 +50,9 @@ public interface ChefMapper {
             "rating = #{chef.rating}, " +
             "status = #{chef.status}, " +
             "change_date = CURRENT_TIMESTAMP" +
-            "WHERE id = #{chef.id}")
+            "WHERE chef.id = #{chef.id}")
     int saveChef(final UpdateChefEvent updateChefEvent);
 
-    @Delete("DELETE FROM CHEF WHERE id = #{deleteChefEvent.id}")
-    int deleteChef(final DeleteChefEvent id);
+    @Update("UPDATE chef SET deleted = 1, change_date = CURRENT_TIMESTAMP WHERE chef.id = #{id}")
+    int deleteChef(final DeleteChefEvent deleteChefEvent);
 }
