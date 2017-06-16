@@ -3,6 +3,10 @@ package org.example.seed.event.client;
 import lombok.*;
 import org.example.seed.domain.Client;
 import org.example.seed.event.CreateEvent;
+import org.example.seed.group.client.ClientCreateGroup;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by PINA on 22/05/2017.
@@ -14,5 +18,8 @@ import org.example.seed.event.CreateEvent;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class CreateClientEvent extends CreateEvent {
+
+    @Valid
+    @NotNull(groups = {ClientCreateGroup.class})
     private Client client;
 }
