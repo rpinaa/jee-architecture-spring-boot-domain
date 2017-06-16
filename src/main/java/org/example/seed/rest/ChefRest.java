@@ -35,5 +35,5 @@ public interface ChefRest {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteChef(final UUID id);
+    Callable<ResponseChefEvent> deleteChef(final UUID id) throws ExecutionException, InterruptedException;
 }

@@ -17,5 +17,5 @@ public interface ChefService {
 
     Future<ResponseChefEvent> updateChef(final UpdateChefEvent updateChefEvent);
 
-    void deleteChef(final DeleteChefEvent deleteChefEvent);
+    Future<ResponseChefEvent> deleteChef(final DeleteChefEvent deleteChefEvent);
 }

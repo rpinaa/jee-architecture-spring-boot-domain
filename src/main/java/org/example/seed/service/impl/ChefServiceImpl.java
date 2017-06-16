@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Future;
 
 /**
@@ -84,11 +86,17 @@ public class ChefServiceImpl implements ChefService {
     }
 
     @Override
-    @Async
     @CacheEvict(value = "chefs", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void deleteChef(final DeleteChefEvent deleteChefEvent) {
+    public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent deleteChefEvent) {
 
-        this.chefMapper.deleteChef(deleteChefEvent);
+        final Optional<UUID> uuidAccount = Optional.of(this.accountMapper.findAccountId(deleteChefEvent));
+
+        uuidAccount.ifPresent(uuid -> {
+            this.chefMapper.deleteChef(deleteChefEvent);
+            this.accountMapper.deleteAccount(uuid);
+        });
+
+        return new AsyncResult<>(null);
     }
 }
