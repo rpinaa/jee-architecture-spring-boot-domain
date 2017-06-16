@@ -42,8 +42,8 @@ public class ChefServiceImpl implements ChefService {
         final int offset = (requestAllChefEvent.getPage() - 1) * requestAllChefEvent.getLimit();
         final int limit = requestAllChefEvent.getPage() * requestAllChefEvent.getLimit();
 
-        final Set<Chef> chefs = this.chefMapper.findAllChefs(new RowBounds(offset, limit));
-        final long total = this.chefMapper.countAllChefs();
+        final Set<Chef> chefs = this.chefMapper.findChefs(new RowBounds(offset, limit));
+        final long total = this.chefMapper.countChefs();
 
         return new AsyncResult<>(CatalogChefEvent.builder().chefs(chefs).total(total).build());
     }
@@ -69,7 +69,7 @@ public class ChefServiceImpl implements ChefService {
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Future<ResponseChefEvent> requestChef(final RequestChefEvent requestChefEvent) {
 
-        final Chef chef = this.chefMapper.findChefById(requestChefEvent);
+        final Chef chef = this.chefMapper.findChef(requestChefEvent);
 
         return new AsyncResult<>(ResponseChefEvent.builder().chef(chef).build());
     }
@@ -80,7 +80,17 @@ public class ChefServiceImpl implements ChefService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Future<ResponseChefEvent> updateChef(final UpdateChefEvent updateChefEvent) {
 
-        this.chefMapper.saveChef(updateChefEvent);
+        final RequestChefEvent requestChefEvent = RequestChefEvent.builder()
+                .id(updateChefEvent.getChef().getId()).build();
+
+        final Optional<UUID> uuid = Optional.of(this.accountMapper.findAccount(requestChefEvent));
+
+        uuid.ifPresent(id -> {
+            updateChefEvent.getChef().getAccount().setId(id);
+
+            this.accountMapper.updateAccount(updateChefEvent);
+            this.chefMapper.updateChef(updateChefEvent);
+        });
 
         return new AsyncResult<>(null);
     }
@@ -90,11 +100,14 @@ public class ChefServiceImpl implements ChefService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent deleteChefEvent) {
 
-        final Optional<UUID> uuidAccount = Optional.of(this.accountMapper.findAccountId(deleteChefEvent));
+        final RequestChefEvent requestChefEvent = RequestChefEvent.builder()
+                .id(deleteChefEvent.getId()).build();
 
-        uuidAccount.ifPresent(uuid -> {
+        final Optional<UUID> uuid = Optional.of(this.accountMapper.findAccount(requestChefEvent));
+
+        uuid.ifPresent(id -> {
             this.chefMapper.deleteChef(deleteChefEvent);
-            this.accountMapper.deleteAccount(uuid);
+            this.accountMapper.deleteAccount(id);
         });
 
         return new AsyncResult<>(null);

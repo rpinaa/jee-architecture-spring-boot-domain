@@ -27,19 +27,19 @@ public interface ChefMapper {
     int createChef(final CreateChefEvent createChefEvent);
 
     @Select("SELECT COUNT(*) FROM chef")
-    long countAllChefs();
+    long countChefs();
 
     @Select("SELECT * FROM chef")
     @Results(value = {
             @Result(property = "account", column = "fk_id_account", one = @One(select = "findAccount"))
     })
-    Set<Chef> findAllChefs(final RowBounds rb);
+    Set<Chef> findChefs(final RowBounds rb);
 
     @Select("SELECT * FROM chef WHERE chef.id = #{id}")
     @Results(value = {
             @Result(property = "account", column = "fk_id_account", one = @One(select = "findAccount"))
     })
-    Chef findChefById(final RequestChefEvent requestChefEvent);
+    Chef findChef(final RequestChefEvent requestChefEvent);
 
     @Select("SELECT * FROM account WHERE account.id = #{id}")
     Account findAccount(final String id);
@@ -47,11 +47,9 @@ public interface ChefMapper {
     @Update("UPDATE chef SET" +
             "rfc = #{chef.rfc}, " +
             "curp = #{chef.curp}, " +
-            "rating = #{chef.rating}, " +
-            "status = #{chef.status}, " +
             "change_date = CURRENT_TIMESTAMP" +
             "WHERE chef.id = #{chef.id}")
-    int saveChef(final UpdateChefEvent updateChefEvent);
+    int updateChef(final UpdateChefEvent updateChefEvent);
 
     @Update("UPDATE chef SET deleted = 1, change_date = CURRENT_TIMESTAMP WHERE chef.id = #{id}")
     int deleteChef(final DeleteChefEvent deleteChefEvent);

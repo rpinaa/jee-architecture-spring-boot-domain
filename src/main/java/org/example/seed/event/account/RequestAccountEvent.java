@@ -1,17 +1,17 @@
 package org.example.seed.event.account;
 
 import lombok.Builder;
-import org.example.seed.event.DeleteEvent;
+import org.example.seed.event.RequestEvent;
 
 import java.util.UUID;
 
 /**
  * Created by PINA on 22/05/2017.
  */
-public class DeleteAccountEvent extends DeleteEvent {
+public class RequestAccountEvent extends RequestEvent {
 
     @Builder
-    public DeleteAccountEvent(final UUID id) {
+    public RequestAccountEvent(final UUID id) {
         super(id);
     }
 }

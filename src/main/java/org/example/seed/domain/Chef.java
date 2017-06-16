@@ -26,6 +26,7 @@ public class Chef extends Dates {
         this.id = UUID.randomUUID();
     }
 
+    @NotNull(groups = {ChefUpdateGroup.class})
     private UUID id;
 
     @Rfc
