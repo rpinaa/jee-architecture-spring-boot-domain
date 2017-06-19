@@ -6,6 +6,7 @@ import org.example.seed.domain.Chef;
 import org.example.seed.event.chef.*;
 import org.example.seed.mapper.AccountMapper;
 import org.example.seed.mapper.ChefMapper;
+import org.example.seed.mapper.TelephoneMapper;
 import org.example.seed.service.ChefService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,6 +32,9 @@ public class ChefServiceImpl implements ChefService {
 
     @Autowired
     private ChefMapper chefMapper;
+
+    @Autowired
+    private TelephoneMapper telephoneMapper;
 
     @Override
     @Async
@@ -85,6 +89,10 @@ public class ChefServiceImpl implements ChefService {
 
                     this.accountMapper.updateAccount(chefEvent);
                     this.chefMapper.updateChef(chefEvent);
+
+                    this.telephoneMapper
+                            .mergeTelephones(chefEvent.getChef()
+                                    .getTelephones(), chefEvent.getChef().getId());
 
                     return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
                 })
