@@ -2,7 +2,7 @@ package org.example.seed.event.chef;
 
 import lombok.*;
 import org.example.seed.domain.Chef;
-import org.example.seed.event.UpdateEvent;
+import org.example.seed.event.account.UpdateAccountEvent;
 import org.example.seed.group.chef.ChefUpdateGroup;
 
 import javax.validation.Valid;
@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UpdateChefEvent extends UpdateEvent {
+public class UpdateChefEvent extends UpdateAccountEvent {
 
     @Valid
     @NotNull(groups = {ChefUpdateGroup.class})
