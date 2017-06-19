@@ -18,31 +18,42 @@ import java.util.Set;
 @Repository
 public interface ClientMapper {
 
-    @Insert("INSERT INTO client" +
-            "(id, status, first_name, last_name, email, rating, create_date, change_date, deleted)" +
-            "VALUES(#{client.id}, #{client.status}, #{client.firstName}, #{client.lastName}, #{client.email}," +
-            "#{client.rating}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)")
+    @Insert("INSERT INTO client (id, status, first_name, last_name, email, rating, create_date, change_date, deleted)" +
+            "VALUES(" +
+                "#{client.id}," +
+                "#{client.status}," +
+                "#{client.firstName}," +
+                "#{client.lastName}," +
+                "#{client.email}," +
+                "#{client.rating}," +
+                "CURRENT_TIMESTAMP," +
+                "CURRENT_TIMESTAMP, 0" +
+            ")")
     @Options(useGeneratedKeys = true)
     int createClient(final CreateClientEvent clientEvent);
 
-    @Select("SELECT COUNT(*) FROM client")
+    @Select("SELECT COUNT(*) FROM client WHERE deleted = 0")
     long countClients();
 
-    @Select("SELECT * FROM client")
+    @Select("SELECT * FROM client WHERE deleted = 0")
     Set<Client> findClients(final RowBounds rb);
 
-    @Select("SELECT * FROM client WHERE client.id = #{id}")
+    @Select("SELECT * FROM client WHERE client.id = #{id} AND deleted = 0")
     Client findClient(final RequestClientEvent clientEvent);
 
     @Update("UPDATE client SET" +
-            "first_name = #{client.firstName}," +
-            "last_name = #{client.lastName}," +
-            "email = #{client.email}," +
-            "rating = #{client.rating}," +
-            "change_date = CURRENT_TIMESTAMP" +
-            "WHERE client.id = #{client.id}")
+                "first_name = #{client.firstName}," +
+                "last_name = #{client.lastName}," +
+                "email = #{client.email}," +
+                "rating = #{client.rating}," +
+                "change_date = CURRENT_TIMESTAMP" +
+            "WHERE client.id = #{client.id}" +
+            "AND deleted = 0")
     int updateClient(final UpdateClientEvent clientEvent);
 
-    @Update("UPDATE client SET deleted = 1, change_date = CURRENT_TIMESTAMP WHERE client.id = #{id}")
+    @Update("UPDATE client SET" +
+                "deleted = 1," +
+                "change_date = CURRENT_TIMESTAMP" +
+            "WHERE client.id = #{id}")
     int deleteClient(final DeleteClientEvent clientEvent);
 }
