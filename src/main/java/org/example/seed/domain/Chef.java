@@ -12,6 +12,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -49,5 +50,5 @@ public class Chef extends Dates {
     private Account account;
 
     @Valid
-    private Telephone telephone;
+    private Set<Telephone> telephones;
 }

@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.Future;
 
 /**
@@ -80,19 +79,16 @@ public class ChefServiceImpl implements ChefService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Future<ResponseChefEvent> updateChef(final UpdateChefEvent chefEvent) {
 
-        final RequestChefEvent requestChefEvent = RequestChefEvent.builder()
-                .id(chefEvent.getChef().getId()).build();
+        return Optional.of(this.chefMapper.findAccountUUID(chefEvent.getChef().getId()))
+                .map(id -> {
+                    chefEvent.getChef().getAccount().setId(id);
 
-        final Optional<UUID> uuid = Optional.of(this.accountMapper.findAccount(requestChefEvent));
+                    this.accountMapper.updateAccount(chefEvent);
+                    this.chefMapper.updateChef(chefEvent);
 
-        uuid.ifPresent(id -> {
-            chefEvent.getChef().getAccount().setId(id);
-
-            this.accountMapper.updateAccount(chefEvent);
-            this.chefMapper.updateChef(chefEvent);
-        });
-
-        return new AsyncResult<>(null);
+                    return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
+                })
+                .orElseThrow(RuntimeException::new);
     }
 
     @Override
@@ -101,16 +97,13 @@ public class ChefServiceImpl implements ChefService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent chefEvent) {
 
-        final RequestChefEvent requestChefEvent = RequestChefEvent.builder()
-                .id(chefEvent.getId()).build();
+        return Optional.of(this.chefMapper.findAccountUUID(chefEvent.getId()))
+                .map(id -> {
+                    this.chefMapper.deleteChef(chefEvent);
+                    this.accountMapper.deleteAccount(id);
 
-        final Optional<UUID> uuid = Optional.of(this.accountMapper.findAccount(requestChefEvent));
-
-        uuid.ifPresent(id -> {
-            this.chefMapper.deleteChef(chefEvent);
-            this.accountMapper.deleteAccount(id);
-        });
-
-        return new AsyncResult<>(null);
+                    return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
+                })
+                .orElseThrow(RuntimeException::new);
     }
 }

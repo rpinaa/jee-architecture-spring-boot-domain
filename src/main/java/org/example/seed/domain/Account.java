@@ -1,7 +1,6 @@
 package org.example.seed.domain;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.example.seed.group.chef.ChefCreateGroup;
 import org.example.seed.group.chef.ChefUpdateGroup;
 import org.hibernate.validator.constraints.Email;
@@ -16,8 +15,7 @@ import java.util.UUID;
  */
 @Data
 @XmlRootElement
-@EqualsAndHashCode(callSuper = true)
-public class Account extends Dates {
+public class Account {
 
     public Account () {
         this.id = UUID.randomUUID();
