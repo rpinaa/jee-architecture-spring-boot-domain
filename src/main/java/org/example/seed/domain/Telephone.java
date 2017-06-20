@@ -1,7 +1,6 @@
 package org.example.seed.domain;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.example.seed.catalog.TelephoneType;
 import org.example.seed.group.chef.ChefUpdateGroup;
 import org.example.seed.group.client.ClientCreateGroup;
@@ -16,8 +15,7 @@ import java.util.UUID;
  */
 @Data
 @XmlRootElement
-@EqualsAndHashCode(callSuper = true)
-public class Telephone extends Dates {
+public class Telephone {
 
     public Telephone () {
         this.id = UUID.randomUUID();
@@ -38,5 +36,5 @@ public class Telephone extends Dates {
     private String lada;
 
     @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    private TelephoneType telephoneType;
+    private TelephoneType type;
 }
