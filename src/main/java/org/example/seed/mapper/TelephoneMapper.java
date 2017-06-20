@@ -1,9 +1,6 @@
 package org.example.seed.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.example.seed.domain.Telephone;
 import org.springframework.stereotype.Repository;
 
@@ -27,8 +24,11 @@ public interface TelephoneMapper {
                 "fk_id_chef = #{fk}",
             ")"})
     @Options(useGeneratedKeys = true)
-    int create(Telephone telephone, final UUID fk);
+    int create(final Telephone telephone, final UUID fk);
 
     @Select("SELECT id, name, number, lada, type FROM telephone WHERE fk_id_chef = #{id}")
     Set<Telephone> findManyByChef(final UUID id);
+
+    @Delete("DELETE FROM telephone WHERE id = #{id}")
+    int delete(final UUID id);
 }

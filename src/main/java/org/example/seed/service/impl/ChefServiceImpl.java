@@ -116,6 +116,9 @@ public class ChefServiceImpl implements ChefService {
                 .map(id -> {
                     this.chefMapper.delete(event);
                     this.accountMapper.delete(id);
+                    this.telephoneMapper.findManyByChef(event.getId())
+                            .parallelStream()
+                            .forEach(t -> this.telephoneMapper.delete(t.getId()));
 
                     return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
                 })
