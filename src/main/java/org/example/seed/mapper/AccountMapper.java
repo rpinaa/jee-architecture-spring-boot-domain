@@ -26,23 +26,23 @@ public interface AccountMapper {
                 "CURRENT_TIMESTAMP",
             ")"})
     @Options(useGeneratedKeys = true)
-    int createAccount(final CreateAccountEvent chefEvent);
+    int create(final CreateAccountEvent chefEvent);
 
-    @Select("SELECT * FROM account WHERE account.id = #{id} AND deleted = 0")
-    Account findAccount(final String id);
+    @Select("SELECT * FROM account WHERE id = #{id} AND deleted = 0")
+    Account findOne(final String id);
 
     @Update({"UPDATE account SET",
                 "first_name = #{chef.account.firstName},",
                 "last_name = #{chef.account.lastName},",
                 "email = #{chef.account.email},",
                 "change_date = CURRENT_TIMESTAMP",
-            "WHERE account.id = #{chef.account.id}",
+            "WHERE id = #{chef.account.id} ",
             "AND deleted = 0"})
-    int updateAccount(final UpdateAccountEvent accountEvent);
+    int update(final UpdateAccountEvent accountEvent);
 
     @Update({"UPDATE account SET",
                 "deleted = 1,",
                 "change_date = CURRENT_TIMESTAMP",
-            "WHERE account.id = #{id}"})
-    int deleteAccount(final UUID id);
+            "WHERE id = #{id}"})
+    int delete(final UUID id);
 }

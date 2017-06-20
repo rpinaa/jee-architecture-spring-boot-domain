@@ -6,6 +6,7 @@ import org.example.seed.catalog.ChefStatus;
 import org.example.seed.constraint.Curp;
 import org.example.seed.constraint.Rfc;
 import org.example.seed.group.chef.ChefUpdateGroup;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -50,5 +51,6 @@ public class Chef extends Dates {
     private Account account;
 
     @Valid
+    @NotEmpty(groups = {ChefUpdateGroup.class})
     private Set<Telephone> telephones;
 }

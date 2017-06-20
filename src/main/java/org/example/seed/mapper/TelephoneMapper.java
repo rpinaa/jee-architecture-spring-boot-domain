@@ -2,6 +2,7 @@ package org.example.seed.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.example.seed.domain.Telephone;
 import org.springframework.stereotype.Repository;
@@ -25,15 +26,9 @@ public interface TelephoneMapper {
                 "type = #{type},",
                 "fk_id_chef = #{fk}",
             ")"})
-    int createTelephone(Telephone telephone, final UUID fk);
+    @Options(useGeneratedKeys = true)
+    int create(Telephone telephone, final UUID fk);
 
-    @Select("SELECT * FROM telephone WHERE telephone.fk_id_chef = #{id}")
-    Set<Telephone> findTelephonesByChef(final UUID id);
-
-    default void mergeTelephones(final Set<Telephone> telephones, final UUID id) {
-        this.findTelephonesByChef(id)
-                .parallelStream()
-                .filter(t -> !telephones.contains(t))
-                .forEach(t -> this.createTelephone(t, id));
-    }
+    @Select("SELECT id, name, number, lada, type FROM telephone WHERE fk_id_chef = #{id}")
+    Set<Telephone> findManyByChef(final UUID id);
 }

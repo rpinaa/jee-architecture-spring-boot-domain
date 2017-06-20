@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `chef` (
   `create_date` DATE NULL,
   `change_date` DATE NULL,
   `deleted` bit(1) DEFAULT NULL,
-  `fk_id_account` VARCHAR(50) NOT NULL,
+  `fk_id_account` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_chef_account`
     FOREIGN KEY (`fk_id_account`)
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `telephone` (
   `number` INT(11) NULL,
   `lada` VARCHAR(45) NULL,
   `type` VARCHAR(45) NULL,
-  `fk_id_chef` VARCHAR(512) NOT NULL,
+  `fk_id_chef` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_telephones_chef`
     FOREIGN KEY (`fk_id_chef`)
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   `create_date` DATE NULL,
   `change_date` DATE NULL,
   `deleted` bit(1) DEFAULT NULL,
-  `fk_id_telephone` VARCHAR(512) NOT NULL,
+  `fk_id_telephone` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_client_telephone`
     FOREIGN KEY (`fk_id_telephone`)
