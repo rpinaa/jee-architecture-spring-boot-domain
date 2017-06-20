@@ -3,6 +3,7 @@ package org.example.seed.service.impl;
 import org.apache.ibatis.session.RowBounds;
 import org.example.seed.catalog.ChefStatus;
 import org.example.seed.domain.Chef;
+import org.example.seed.domain.Telephone;
 import org.example.seed.event.chef.*;
 import org.example.seed.mapper.AccountMapper;
 import org.example.seed.mapper.ChefMapper;
@@ -17,9 +18,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 /**
  * Created by PINA on 15/06/2017.
@@ -40,13 +44,13 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @Cacheable(value = "chefs")
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent chefEvent) {
+    public Future<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent event) {
 
-        final int offset = (chefEvent.getPage() - 1) * chefEvent.getLimit();
-        final int limit = chefEvent.getPage() * chefEvent.getLimit();
+        final int offset = (event.getPage() - 1) * event.getLimit();
+        final int limit = event.getPage() * event.getLimit();
 
-        final Set<Chef> chefs = this.chefMapper.findChefs(new RowBounds(offset, limit));
-        final long total = this.chefMapper.countChefs();
+        final Set<Chef> chefs = this.chefMapper.findMany(new RowBounds(offset, limit));
+        final long total = this.chefMapper.count();
 
         return new AsyncResult<>(CatalogChefEvent.builder().chefs(chefs).total(total).build());
     }
@@ -55,13 +59,13 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @CacheEvict(value = "chefs", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> createChef(final CreateChefEvent chefEvent) {
+    public Future<ResponseChefEvent> createChef(final CreateChefEvent event) {
 
-        chefEvent.getChef().setStatus(ChefStatus.PRE_REGISTERED);
-        chefEvent.getChef().setRating(0F);
+        event.getChef().setStatus(ChefStatus.PRE_REGISTERED);
+        event.getChef().setRating(0F);
 
-        this.accountMapper.createAccount(chefEvent);
-        this.chefMapper.createChef(chefEvent);
+        this.accountMapper.create(event);
+        this.chefMapper.create(event);
 
         return new AsyncResult<>(null);
     }
@@ -70,9 +74,9 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @Cacheable(value = "chefs")
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<ResponseChefEvent> requestChef(final RequestChefEvent chefEvent) {
+    public Future<ResponseChefEvent> requestChef(final RequestChefEvent event) {
 
-        final Chef chef = this.chefMapper.findChef(chefEvent);
+        final Chef chef = this.chefMapper.findOne(event);
 
         return new AsyncResult<>(ResponseChefEvent.builder().chef(chef).build());
     }
@@ -81,18 +85,21 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @CacheEvict(value = "chefs", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> updateChef(final UpdateChefEvent chefEvent) {
+    public Future<ResponseChefEvent> updateChef(final UpdateChefEvent event) {
 
-        return Optional.of(this.chefMapper.findAccountUUID(chefEvent.getChef().getId()))
+        return Optional.of(this.chefMapper.findAccountUUID(event.getChef().getId()))
                 .map(id -> {
-                    chefEvent.getChef().getAccount().setId(id);
+                    event.getChef().getAccount().setId(id);
 
-                    this.accountMapper.updateAccount(chefEvent);
-                    this.chefMapper.updateChef(chefEvent);
+                    this.accountMapper.update(event);
+                    this.chefMapper.update(event);
 
-                    this.telephoneMapper
-                            .mergeTelephones(chefEvent.getChef()
-                                    .getTelephones(), chefEvent.getChef().getId());
+                    Stream.concat(this.telephoneMapper.findManyByChef(event.getChef().getId())
+                            .stream(), event.getChef().getTelephones()
+                            .stream())
+                            .filter(new ConcurrentSkipListSet<>(Comparator.comparing(Telephone::getNumber))::add)
+                            .parallel()
+                            .forEach(t -> this.telephoneMapper.create(t, event.getChef().getId()));
 
                     return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
                 })
@@ -103,12 +110,12 @@ public class ChefServiceImpl implements ChefService {
     @Async
     @CacheEvict(value = "chefs", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent chefEvent) {
+    public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent event) {
 
-        return Optional.of(this.chefMapper.findAccountUUID(chefEvent.getId()))
+        return Optional.of(this.chefMapper.findAccountUUID(event.getId()))
                 .map(id -> {
-                    this.chefMapper.deleteChef(chefEvent);
-                    this.accountMapper.deleteAccount(id);
+                    this.chefMapper.delete(event);
+                    this.accountMapper.delete(id);
 
                     return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
                 })

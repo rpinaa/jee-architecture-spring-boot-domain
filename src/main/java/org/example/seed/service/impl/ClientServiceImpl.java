@@ -31,13 +31,13 @@ public class ClientServiceImpl implements ClientService {
     @Async
     @Cacheable(value = "client")
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<CatalogClientEvent> requestAllClients(final RequestAllClientEvent clientEvent) {
+    public Future<CatalogClientEvent> requestAllClients(final RequestAllClientEvent event) {
 
-        final int offset = (clientEvent.getPage() - 1) * clientEvent.getLimit();
-        final int limit = clientEvent.getPage() * clientEvent.getLimit();
+        final int offset = (event.getPage() - 1) * event.getLimit();
+        final int limit = event.getPage() * event.getLimit();
 
-        final Set<Client> clients = this.clientMapper.findClients(new RowBounds(offset, limit));
-        final long total = this.clientMapper.countClients();
+        final Set<Client> clients = this.clientMapper.findMany(new RowBounds(offset, limit));
+        final long total = this.clientMapper.count();
 
         return new AsyncResult<>(CatalogClientEvent.builder().clients(clients).total(total).build());
     }
@@ -46,12 +46,12 @@ public class ClientServiceImpl implements ClientService {
     @Async
     @CacheEvict(value = "client", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseClientEvent> createClient(final CreateClientEvent clientEvent) {
+    public Future<ResponseClientEvent> createClient(final CreateClientEvent event) {
 
-        clientEvent.getClient().setStatus(ClientStatus.REGISTERED);
-        clientEvent.getClient().setRating(0F);
+        event.getClient().setStatus(ClientStatus.REGISTERED);
+        event.getClient().setRating(0F);
 
-        this.clientMapper.createClient(clientEvent);
+        this.clientMapper.create(event);
 
         return new AsyncResult<>(null);
     }
@@ -60,9 +60,9 @@ public class ClientServiceImpl implements ClientService {
     @Async
     @Cacheable(value = "client")
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<ResponseClientEvent> requestClient(final RequestClientEvent clientEvent) {
+    public Future<ResponseClientEvent> requestClient(final RequestClientEvent event) {
 
-        final Client client = this.clientMapper.findClient(clientEvent);
+        final Client client = this.clientMapper.findOne(event);
 
         return new AsyncResult<>(ResponseClientEvent.builder().client(client).build());
     }
@@ -71,9 +71,9 @@ public class ClientServiceImpl implements ClientService {
     @Async
     @CacheEvict(value = "client", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseClientEvent> updateClient(final UpdateClientEvent clientEvent) {
+    public Future<ResponseClientEvent> updateClient(final UpdateClientEvent event) {
 
-        this.clientMapper.updateClient(clientEvent);
+        this.clientMapper.update(event);
 
         return new AsyncResult<>(null);
     }
@@ -82,9 +82,9 @@ public class ClientServiceImpl implements ClientService {
     @Async
     @CacheEvict(value = "client", allEntries = true)
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseClientEvent> deleteClient(final DeleteClientEvent clientEvent) {
+    public Future<ResponseClientEvent> deleteClient(final DeleteClientEvent event) {
 
-        this.clientMapper.deleteClient(clientEvent);
+        this.clientMapper.delete(event);
 
         return new AsyncResult<>(null);
     }
