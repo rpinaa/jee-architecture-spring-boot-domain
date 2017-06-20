@@ -19,51 +19,57 @@ import java.util.UUID;
 @Repository
 public interface ChefMapper {
 
-    @Insert("INSERT INTO chef (id, status, rfc, curp, rating, create_date, change_date, deleted, fk_id_account)" +
-            "VALUES(" +
-                "#{chef.id}," +
-                "#{chef.status}," +
-                "#{chef.rfc}," +
-                "#{chef.curp}," +
-                "#{chef.rating}," +
-                "CURRENT_TIMESTAMP," +
-                "CURRENT_TIMESTAMP, 0," +
-                "#{chef.account.id}" +
-            ")")
+    @Insert({"INSERT INTO chef (id, status, rfc, curp, rating, create_date, change_date, deleted, fk_id_account)",
+            "VALUES(",
+            "#{chef.id},",
+            "#{chef.status},",
+            "#{chef.rfc},",
+            "#{chef.curp},",
+            "#{chef.rating},",
+            "CURRENT_TIMESTAMP,",
+            "CURRENT_TIMESTAMP, 0,",
+            "#{chef.account.id}",
+            ")"})
     @Options(useGeneratedKeys = true)
-    int createChef(final CreateChefEvent chefEvent);
+    int create(final CreateChefEvent chefEvent);
 
     @Select("SELECT COUNT(*) FROM chef WHERE deleted = 0")
-    long countChefs();
+    long count();
 
     @Select("SELECT * FROM chef WHERE deleted = 0")
     @Results(value = {
+            @Result(property = "id", column = "id"),
             @Result(property = "account", column = "fk_id_account",
-                    one = @One(select = "org.example.seed.mapper.AccountMapper.findAccount"))
+                    one = @One(select = "org.example.seed.mapper.AccountMapper.findOne")),
+            @Result(property = "telephones", column = "id",
+                    many = @Many(select = "org.example.seed.mapper.TelephoneMapper.findManyByChef"))
     })
-    Set<Chef> findChefs(final RowBounds rb);
+    Set<Chef> findMany(final RowBounds rb);
 
-    @Select("SELECT * FROM chef WHERE chef.id = #{id} AND deleted = 0")
+    @Select("SELECT * FROM chef WHERE id = #{id} AND deleted = 0")
     @Results(value = {
+            @Result(property = "id", column = "id"),
             @Result(property = "account", column = "fk_id_account",
-                    one = @One(select = "org.example.seed.mapper.AccountMapper.findAccount"))
+                one = @One(select = "org.example.seed.mapper.AccountMapper.findOne")),
+            @Result(property = "telephones", column = "id",
+                many = @Many(select = "org.example.seed.mapper.TelephoneMapper.findManyByChef"))
     })
-    Chef findChef(final RequestChefEvent chefEvent);
+    Chef findOne(final RequestChefEvent chefEvent);
 
-    @Select("SELECT chef.fk_id_account FROM chef WHERE chef.id = #{id} AND deleted = 0")
+    @Select("SELECT chef.fk_id_account FROM chef WHERE id = #{id} AND deleted = 0")
     UUID findAccountUUID(final UUID id);
 
-    @Update("UPDATE chef SET" +
-                "rfc = #{chef.rfc}," +
-                "curp = #{chef.curp}," +
-                "change_date = CURRENT_TIMESTAMP" +
-            "WHERE chef.id = #{chef.id}" +
-            "AND deleted = 0")
-    int updateChef(final UpdateChefEvent chefEvent);
+    @Update({"UPDATE chef SET",
+            "rfc = #{chef.rfc},",
+            "curp = #{chef.curp},",
+            "change_date = CURRENT_TIMESTAMP",
+            "WHERE id = #{chef.id} ",
+            "AND deleted = 0"})
+    int update(final UpdateChefEvent chefEvent);
 
-    @Update("UPDATE chef SET" +
-                "deleted = 1," +
-                "change_date = CURRENT_TIMESTAMP" +
-            "WHERE chef.id = #{id}")
-    int deleteChef(final DeleteChefEvent chefEvent);
+    @Update({"UPDATE chef SET",
+            "deleted = 1,",
+            "change_date = CURRENT_TIMESTAMP",
+            "WHERE id = #{id}"})
+    int delete(final DeleteChefEvent chefEvent);
 }

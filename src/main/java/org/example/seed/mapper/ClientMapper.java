@@ -30,16 +30,16 @@ public interface ClientMapper {
                 "CURRENT_TIMESTAMP, 0" +
             ")")
     @Options(useGeneratedKeys = true)
-    int createClient(final CreateClientEvent clientEvent);
+    int create(final CreateClientEvent clientEvent);
 
     @Select("SELECT COUNT(*) FROM client WHERE deleted = 0")
-    long countClients();
+    long count();
 
     @Select("SELECT * FROM client WHERE deleted = 0")
-    Set<Client> findClients(final RowBounds rb);
+    Set<Client> findMany(final RowBounds rb);
 
-    @Select("SELECT * FROM client WHERE client.id = #{id} AND deleted = 0")
-    Client findClient(final RequestClientEvent clientEvent);
+    @Select("SELECT * FROM client WHERE id = #{id} AND deleted = 0")
+    Client findOne(final RequestClientEvent clientEvent);
 
     @Update("UPDATE client SET" +
                 "first_name = #{client.firstName}," +
@@ -47,13 +47,13 @@ public interface ClientMapper {
                 "email = #{client.email}," +
                 "rating = #{client.rating}," +
                 "change_date = CURRENT_TIMESTAMP" +
-            "WHERE client.id = #{client.id}" +
+            "WHERE id = #{client.id}" +
             "AND deleted = 0")
-    int updateClient(final UpdateClientEvent clientEvent);
+    int update(final UpdateClientEvent clientEvent);
 
     @Update("UPDATE client SET" +
                 "deleted = 1," +
                 "change_date = CURRENT_TIMESTAMP" +
-            "WHERE client.id = #{id}")
-    int deleteClient(final DeleteClientEvent clientEvent);
+            "WHERE id = #{id}")
+    int delete(final DeleteClientEvent clientEvent);
 }
