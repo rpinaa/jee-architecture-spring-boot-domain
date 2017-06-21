@@ -3,6 +3,7 @@ package org.example.seed.service.impl;
 import org.apache.ibatis.session.RowBounds;
 import org.example.seed.catalog.ChefStatus;
 import org.example.seed.domain.Chef;
+import org.example.seed.domain.Telephone;
 import org.example.seed.event.chef.*;
 import org.example.seed.mapper.AccountMapper;
 import org.example.seed.mapper.ChefMapper;
@@ -85,14 +86,22 @@ public class ChefServiceImpl implements ChefService {
 
         return Optional.of(this.chefMapper.findAccountUUID(event.getChef().getId()))
                 .map(id -> {
-                    event.getChef().getAccount().setId(id);
-                    event.getChef()
-                            .getTelephones()
+                    final Set<Telephone> telephones = this.telephoneMapper
+                            .findManyByChef(event.getChef().getId());
+
+                    event.getChef().getTelephones()
                             .parallelStream()
-                            .filter(t -> this.telephoneMapper.findManyByChef(event.getChef().getId())
+                            .filter(t -> telephones
                                     .parallelStream()
                                     .noneMatch(s -> t.getNumber().equals(s.getNumber())))
                             .forEach(t -> this.telephoneMapper.create(t, event.getChef().getId()));
+
+                    event.getChef().getTelephones()
+                            .parallelStream()
+                            .filter(t -> telephones
+                                    .parallelStream()
+                                    .anyMatch(s -> t.getNumber().equals(s.getNumber())))
+                            .forEach(t -> this.telephoneMapper.update(t, event.getChef().getId()));
 
                     this.accountMapper.update(event);
                     this.chefMapper.update(event);
