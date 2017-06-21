@@ -16,15 +16,15 @@ public interface TelephoneMapper {
 
     @Insert({"INSERT INTO telephone (id, name, number, lada, type, fk_id_chef)",
             "VALUES(",
-                "id = #{id},",
-                "name = #{name},",
-                "number = #{number},",
-                "lada = #{lada},",
-                "type = #{type},",
-                "fk_id_chef = #{fk}",
+                "#{telephone.id},",
+                "#{telephone.name},",
+                "#{telephone.number},",
+                "#{telephone.lada},",
+                "#{telephone.type},",
+                "#{fk}",
             ")"})
     @Options(useGeneratedKeys = true)
-    int create(final Telephone telephone, final UUID fk);
+    int create(@Param("telephone") final Telephone telephone, @Param("fk") final UUID fk);
 
     @Select("SELECT id, name, number, lada, type FROM telephone WHERE fk_id_chef = #{id}")
     Set<Telephone> findManyByChef(final UUID id);

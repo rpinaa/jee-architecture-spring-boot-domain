@@ -3,7 +3,6 @@ package org.example.seed.service.impl;
 import org.apache.ibatis.session.RowBounds;
 import org.example.seed.catalog.ChefStatus;
 import org.example.seed.domain.Chef;
-import org.example.seed.domain.Telephone;
 import org.example.seed.event.chef.*;
 import org.example.seed.mapper.AccountMapper;
 import org.example.seed.mapper.ChefMapper;
@@ -18,12 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Future;
-import java.util.stream.Stream;
 
 /**
  * Created by PINA on 15/06/2017.
@@ -90,16 +86,16 @@ public class ChefServiceImpl implements ChefService {
         return Optional.of(this.chefMapper.findAccountUUID(event.getChef().getId()))
                 .map(id -> {
                     event.getChef().getAccount().setId(id);
+                    event.getChef()
+                            .getTelephones()
+                            .parallelStream()
+                            .filter(t -> this.telephoneMapper.findManyByChef(event.getChef().getId())
+                                    .parallelStream()
+                                    .noneMatch(s -> t.getNumber().equals(s.getNumber())))
+                            .forEach(t -> this.telephoneMapper.create(t, event.getChef().getId()));
 
                     this.accountMapper.update(event);
                     this.chefMapper.update(event);
-
-                    Stream.concat(this.telephoneMapper.findManyByChef(event.getChef().getId())
-                            .stream(), event.getChef().getTelephones()
-                            .stream())
-                            .filter(new ConcurrentSkipListSet<>(Comparator.comparing(Telephone::getNumber))::add)
-                            .parallel()
-                            .forEach(t -> this.telephoneMapper.create(t, event.getChef().getId()));
 
                     return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
                 })
