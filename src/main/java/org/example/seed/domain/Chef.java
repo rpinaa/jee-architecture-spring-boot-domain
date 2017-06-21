@@ -24,7 +24,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class Chef extends Dates {
 
-    public Chef () {
+    public Chef() {
         this.id = UUID.randomUUID();
     }
 

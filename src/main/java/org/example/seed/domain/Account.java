@@ -17,7 +17,7 @@ import java.util.UUID;
 @XmlRootElement
 public class Account {
 
-    public Account () {
+    public Account() {
         this.id = UUID.randomUUID();
     }
 
