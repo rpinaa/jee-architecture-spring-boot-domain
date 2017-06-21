@@ -18,7 +18,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chef` (
   `id` VARCHAR(36) NOT NULL,
-  `status` VARCHAR(512) NULL,
+  `status` VARCHAR(25) NULL,
   `rfc` VARCHAR(45) NULL,
   `curp` VARCHAR(45) NULL,
   `rating` FLOAT NULL,
@@ -40,8 +40,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `telephone` (
   `id` VARCHAR(36) NOT NULL,
   `name` VARCHAR(45) NULL,
-  `number` INT(11) NULL,
-  `lada` VARCHAR(45) NULL,
+  `number` VARCHAR(15) NULL,
+  `lada` VARCHAR(4) NULL,
   `type` VARCHAR(45) NULL,
   `fk_id_chef` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
@@ -57,7 +57,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `client` (
   `id` VARCHAR(36) NOT NULL,
-  `status` VARCHAR(45) NULL,
+  `status` VARCHAR(25) NULL,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
