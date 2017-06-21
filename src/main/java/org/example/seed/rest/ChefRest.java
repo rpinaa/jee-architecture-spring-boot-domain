@@ -22,7 +22,7 @@ public interface ChefRest {
     Callable<CatalogChefEvent> getAllChefs(final int page, final int limit) throws ExecutionException, InterruptedException;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseChefEvent> createChef(final CreateChefEvent chefEvent) throws ExecutionException, InterruptedException;
 
     @GetMapping(value = "/{id}")
@@ -30,7 +30,7 @@ public interface ChefRest {
     Callable<ResponseChefEvent> getChef(final UUID id) throws ExecutionException, InterruptedException;
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseChefEvent> updateChef(final UpdateChefEvent chefEvent) throws ExecutionException, InterruptedException;
 
     @DeleteMapping(value = "/{id}")
