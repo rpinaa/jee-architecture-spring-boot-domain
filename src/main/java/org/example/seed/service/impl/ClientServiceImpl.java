@@ -5,6 +5,7 @@ import org.example.seed.catalog.ClientStatus;
 import org.example.seed.domain.Client;
 import org.example.seed.event.client.*;
 import org.example.seed.mapper.ClientMapper;
+import org.example.seed.mapper.TelephoneMapper;
 import org.example.seed.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Future;
 
@@ -26,6 +28,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientMapper clientMapper;
+
+    @Autowired
+    private TelephoneMapper telephoneMapper;
 
     @Override
     @Async
@@ -52,6 +57,7 @@ public class ClientServiceImpl implements ClientService {
         event.getClient().setRating(0F);
 
         this.clientMapper.create(event);
+        this.telephoneMapper.create(event.getClient().getTelephone(), null);
 
         return new AsyncResult<>(null);
     }
@@ -74,6 +80,7 @@ public class ClientServiceImpl implements ClientService {
     public Future<ResponseClientEvent> updateClient(final UpdateClientEvent event) {
 
         this.clientMapper.update(event);
+        this.telephoneMapper.update(event.getClient().getTelephone(), null);
 
         return new AsyncResult<>(null);
     }
@@ -84,8 +91,13 @@ public class ClientServiceImpl implements ClientService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Future<ResponseClientEvent> deleteClient(final DeleteClientEvent event) {
 
-        this.clientMapper.delete(event);
+        return Optional.of(this.clientMapper.findTelephoneUUID(event.getId()))
+                .map(id -> {
+                    this.telephoneMapper.delete(id);
+                    this.clientMapper.delete(event);
 
-        return new AsyncResult<>(null);
+                    return new AsyncResult<>(ResponseClientEvent.builder().client(null).build());
+                })
+                .orElseThrow(RuntimeException::new);
     }
 }

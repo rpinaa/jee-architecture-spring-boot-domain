@@ -26,8 +26,20 @@ public interface TelephoneMapper {
     @Options(useGeneratedKeys = true)
     int create(@Param("telephone") final Telephone telephone, @Param("fk") final UUID fk);
 
+    @Select("SELECT id, name, number, lada, type FROM telephone WHERE id = #{id}")
+    Telephone findOne(final UUID id);
+
     @Select("SELECT id, name, number, lada, type FROM telephone WHERE fk_id_chef = #{id}")
     Set<Telephone> findManyByChef(final UUID id);
+
+    @Update({"UPDATE telephone SET",
+            "name = #{telephone.name},",
+            "number = #{telephone.number},",
+            "lada = #{telephone.lada},",
+            "type = #{telephone.type}",
+            "WHERE id = #{telephone.id}",
+            "AND fk_id_chef = #{fk}"})
+    int update(@Param("telephone") final Telephone telephone, @Param("fk") final UUID fk);
 
     @Delete("DELETE FROM telephone WHERE id = #{id}")
     int delete(final UUID id);
