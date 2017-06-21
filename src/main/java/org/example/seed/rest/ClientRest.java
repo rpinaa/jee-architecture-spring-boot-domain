@@ -22,7 +22,7 @@ public interface ClientRest {
     Callable<CatalogClientEvent> getAllClients(final int page, final int limit) throws ExecutionException, InterruptedException;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseClientEvent> createClient(final CreateClientEvent clientEvent) throws ExecutionException, InterruptedException;
 
     @GetMapping(value = "/{id}")
@@ -30,7 +30,7 @@ public interface ClientRest {
     Callable<ResponseClientEvent> getClient(final UUID id) throws ExecutionException, InterruptedException;
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseClientEvent> updateClient(final UpdateClientEvent clientEvent) throws ExecutionException, InterruptedException;
 
     @DeleteMapping(value = "/{id}")
