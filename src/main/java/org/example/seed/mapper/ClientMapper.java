@@ -10,6 +10,7 @@ import org.example.seed.event.client.UpdateClientEvent;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by PINA on 16/06/2017.
@@ -36,10 +37,21 @@ public interface ClientMapper {
     long count();
 
     @Select("SELECT * FROM client WHERE deleted = 0")
+    @Results(value = {
+            @Result(property = "telephone", column = "fk_id_telephone",
+                    one = @One(select = "org.example.seed.mapper.TelephoneMapper.findOne"))
+    })
     Set<Client> findMany(final RowBounds rb);
 
     @Select("SELECT * FROM client WHERE id = #{id} AND deleted = 0")
+    @Results(value = {
+            @Result(property = "telephone", column = "fk_id_telephone",
+                    one = @One(select = "org.example.seed.mapper.TelephoneMapper.findOne"))
+    })
     Client findOne(final RequestClientEvent clientEvent);
+
+    @Select("SELECT client.fk_id_telephone FROM client WHERE id = #{id} AND deleted = 0")
+    UUID findTelephoneUUID(final UUID id);
 
     @Update({"UPDATE client SET",
                 "first_name = #{client.firstName},",
