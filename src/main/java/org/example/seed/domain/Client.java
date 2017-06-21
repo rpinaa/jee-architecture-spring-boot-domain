@@ -23,7 +23,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class Client extends Dates {
 
-    public Client () {
+    public Client() {
         this.id = UUID.randomUUID();
     }
 

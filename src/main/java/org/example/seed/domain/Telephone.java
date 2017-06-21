@@ -17,7 +17,7 @@ import java.util.UUID;
 @XmlRootElement
 public class Telephone {
 
-    public Telephone () {
+    public Telephone() {
         this.id = UUID.randomUUID();
     }
 
