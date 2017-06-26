@@ -40,10 +40,10 @@ public class ChefRestImpl implements ChefRest {
     }
 
     @Override
-    public Callable<ResponseChefEvent> createChef(@RequestBody @Validated(value = {ChefCreateGroup.class}) final CreateChefEvent chefEvent)
+    public Callable<ResponseChefEvent> createChef(@RequestBody @Validated(value = {ChefCreateGroup.class}) final CreateChefEvent event)
             throws ExecutionException, InterruptedException {
 
-        final ResponseChefEvent responseChefEvent = this.chefService.createChef(chefEvent).get();
+        final ResponseChefEvent responseChefEvent = this.chefService.createChef(event).get();
 
         return () -> responseChefEvent;
     }
@@ -60,10 +60,10 @@ public class ChefRestImpl implements ChefRest {
     }
 
     @Override
-    public Callable<ResponseChefEvent> updateChef(@RequestBody @Validated(value = {ChefUpdateGroup.class}) final UpdateChefEvent chefEvent)
+    public Callable<ResponseChefEvent> updateChef(@RequestBody @Validated(value = {ChefUpdateGroup.class}) final UpdateChefEvent event)
             throws ExecutionException, InterruptedException {
 
-        final ResponseChefEvent responseChefEvent = this.chefService.updateChef(chefEvent).get();
+        final ResponseChefEvent responseChefEvent = this.chefService.updateChef(event).get();
 
         return () -> responseChefEvent;
     }

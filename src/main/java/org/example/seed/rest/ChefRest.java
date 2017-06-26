@@ -23,7 +23,7 @@ public interface ChefRest {
 
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    Callable<ResponseChefEvent> createChef(final CreateChefEvent chefEvent) throws ExecutionException, InterruptedException;
+    Callable<ResponseChefEvent> createChef(final CreateChefEvent event) throws ExecutionException, InterruptedException;
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -31,7 +31,7 @@ public interface ChefRest {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    Callable<ResponseChefEvent> updateChef(final UpdateChefEvent chefEvent) throws ExecutionException, InterruptedException;
+    Callable<ResponseChefEvent> updateChef(final UpdateChefEvent event) throws ExecutionException, InterruptedException;
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -40,10 +40,10 @@ public class ClientRestImpl implements ClientRest {
     }
 
     @Override
-    public Callable<ResponseClientEvent> createClient(@RequestBody @Validated(value = {ClientCreateGroup.class}) final CreateClientEvent clientEvent)
+    public Callable<ResponseClientEvent> createClient(@RequestBody @Validated(value = {ClientCreateGroup.class}) final CreateClientEvent event)
             throws ExecutionException, InterruptedException {
 
-        final ResponseClientEvent responseClientEvent = this.clientService.createClient(clientEvent).get();
+        final ResponseClientEvent responseClientEvent = this.clientService.createClient(event).get();
 
         return () -> responseClientEvent;
     }
@@ -60,10 +60,10 @@ public class ClientRestImpl implements ClientRest {
     }
 
     @Override
-    public Callable<ResponseClientEvent> updateClient(@RequestBody @Validated(value = {ClientUpdateGroup.class}) final UpdateClientEvent clientEvent)
+    public Callable<ResponseClientEvent> updateClient(@RequestBody @Validated(value = {ClientUpdateGroup.class}) final UpdateClientEvent event)
             throws ExecutionException, InterruptedException {
 
-        final ResponseClientEvent responseClientEvent = this.clientService.updateClient(clientEvent).get();
+        final ResponseClientEvent responseClientEvent = this.clientService.updateClient(event).get();
 
         return () -> responseClientEvent;
     }

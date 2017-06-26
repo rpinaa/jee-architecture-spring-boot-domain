@@ -23,7 +23,7 @@ public interface ClientRest {
 
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    Callable<ResponseClientEvent> createClient(final CreateClientEvent clientEvent) throws ExecutionException, InterruptedException;
+    Callable<ResponseClientEvent> createClient(final CreateClientEvent event) throws ExecutionException, InterruptedException;
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -31,7 +31,7 @@ public interface ClientRest {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    Callable<ResponseClientEvent> updateClient(final UpdateClientEvent clientEvent) throws ExecutionException, InterruptedException;
+    Callable<ResponseClientEvent> updateClient(final UpdateClientEvent event) throws ExecutionException, InterruptedException;
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
