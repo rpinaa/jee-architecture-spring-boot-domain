@@ -68,9 +68,9 @@ public class ClientServiceImpl implements ClientService {
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Future<ResponseClientEvent> requestClient(final RequestClientEvent event) {
 
-        final Client client = this.clientMapper.findOne(event);
-
-        return new AsyncResult<>(ResponseClientEvent.builder().client(client).build());
+        return new AsyncResult<>(ResponseClientEvent.builder()
+                .client(this.clientMapper.findOne(event))
+                .build());
     }
 
     @Override

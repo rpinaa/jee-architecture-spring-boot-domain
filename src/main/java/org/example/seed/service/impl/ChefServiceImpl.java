@@ -73,9 +73,9 @@ public class ChefServiceImpl implements ChefService {
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Future<ResponseChefEvent> requestChef(final RequestChefEvent event) {
 
-        final Chef chef = this.chefMapper.findOne(event);
-
-        return new AsyncResult<>(ResponseChefEvent.builder().chef(chef).build());
+        return new AsyncResult<>(ResponseChefEvent.builder()
+                .chef(this.chefMapper.findOne(event))
+                .build());
     }
 
     @Override
