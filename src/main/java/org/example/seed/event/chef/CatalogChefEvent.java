@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.seed.domain.Chef;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
 
 /**
@@ -15,6 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class CatalogChefEvent {
 
     private long total;

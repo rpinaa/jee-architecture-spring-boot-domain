@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.seed.domain.Client;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by PINA on 22/05/2017.
  */
@@ -14,6 +16,7 @@ import org.example.seed.domain.Client;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class ResponseClientEvent {
     private Client client;
 }

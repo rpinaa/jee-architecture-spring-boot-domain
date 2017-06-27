@@ -10,6 +10,7 @@ import org.example.seed.group.client.ClientUpdateGroup;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by PINA on 22/05/2017.
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class UpdateClientEvent extends UpdateEvent {
 
     @Valid
