@@ -7,6 +7,7 @@ import org.example.seed.group.client.ClientCreateGroup;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by PINA on 22/05/2017.
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@XmlRootElement
 public class CreateClientEvent extends CreateEvent {
 
     @Valid

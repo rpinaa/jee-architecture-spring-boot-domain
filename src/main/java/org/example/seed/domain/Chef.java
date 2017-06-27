@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,7 +19,6 @@ import java.util.UUID;
  * Created by PINA on 14/06/2017.
  */
 @Data
-@XmlRootElement
 @EqualsAndHashCode(callSuper = true)
 public class Chef extends Dates {
 

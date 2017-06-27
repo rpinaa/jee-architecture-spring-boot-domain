@@ -16,7 +16,6 @@ public class APIConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureContentNegotiation(final ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true)
-                .favorParameter(true)
                 .ignoreAcceptHeader(false)
                 .defaultContentType(MediaType.APPLICATION_JSON)
                 .mediaType("xml", MediaType.APPLICATION_XML)

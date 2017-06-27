@@ -12,14 +12,12 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.UUID;
 
 /**
  * Created by PINA on 14/06/2017.
  */
 @Data
-@XmlRootElement
 @EqualsAndHashCode(callSuper = true)
 public class Client extends Dates {
 
