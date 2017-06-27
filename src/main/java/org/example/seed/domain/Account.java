@@ -7,14 +7,12 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.UUID;
 
 /**
  * Created by PINA on 14/06/2017.
  */
 @Data
-@XmlRootElement
 public class Account {
 
     public Account() {
