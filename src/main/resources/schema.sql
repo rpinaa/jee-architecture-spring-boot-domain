@@ -2,9 +2,9 @@
 -- Table ACCOUNT
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `account` (
-  `id` VARCHAR(50) NOT NULL,
-  `first_name` VARCHAR(45) NULL,
-  `last_name` VARCHAR(45) NULL,
+  `id` VARCHAR(36) NOT NULL,
+  `first_name` VARCHAR(80) NULL,
+  `last_name` VARCHAR(80) NULL,
   `email` VARCHAR(45) NULL,
   `secret` BLOB NULL,
   `create_date` DATE NULL,
@@ -18,9 +18,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chef` (
   `id` VARCHAR(36) NOT NULL,
-  `status` VARCHAR(25) NULL,
-  `rfc` VARCHAR(45) NULL,
-  `curp` VARCHAR(45) NULL,
+  `status` VARCHAR(20) NULL,
+  `rfc` VARCHAR(13) NULL,
+  `curp` VARCHAR(18) NULL,
   `rating` FLOAT NULL,
   `create_date` DATE NULL,
   `change_date` DATE NULL,
@@ -39,10 +39,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `telephone` (
   `id` VARCHAR(36) NOT NULL,
-  `name` VARCHAR(45) NULL,
+  `name` VARCHAR(15) NULL,
   `number` VARCHAR(15) NULL,
-  `lada` VARCHAR(4) NULL,
-  `type` VARCHAR(45) NULL,
+  `lada` VARCHAR(5) NULL,
+  `type` VARCHAR(10) NULL,
   `fk_id_chef` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_telephones_chef`
@@ -57,9 +57,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `client` (
   `id` VARCHAR(36) NOT NULL,
-  `status` VARCHAR(25) NULL,
-  `first_name` VARCHAR(45) NULL,
-  `last_name` VARCHAR(45) NULL,
+  `status` VARCHAR(20) NULL,
+  `first_name` VARCHAR(80) NULL,
+  `last_name` VARCHAR(80) NULL,
   `email` VARCHAR(45) NULL,
   `rating` FLOAT NULL,
   `create_date` DATE NULL,
