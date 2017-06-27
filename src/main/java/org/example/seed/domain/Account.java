@@ -24,6 +24,7 @@ public class Account {
     private UUID id;
 
     @Email
+    @Size(max = 45)
     @NotNull(groups = {ChefCreateGroup.class, ChefUpdateGroup.class})
     private String email;
 
