@@ -60,6 +60,8 @@ Only for local environment:
 
 Go to http://localhost:8080/api/swagger-ui.html to see the Swagger Explorer
 
+![alt tag](https://raw.githubusercontent.com/rpinaa/jee-architecture-spring-boot-entity/master/er-scheme.png)
+
 ## License
 
 MIT
