@@ -53,6 +53,12 @@ For production environment:
 $ mvn clean spring-boot:run -P production
 ```
 
+### Exploring
+
+Only for local environment:
+
+Go to http://localhost:8080/swagger-ui.html to see the Swagger Explorer
+
 ## License
 
 MIT
