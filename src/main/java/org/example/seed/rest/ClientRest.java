@@ -25,15 +25,15 @@ public interface ClientRest {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseClientEvent> createClient(final CreateClientEvent event) throws ExecutionException, InterruptedException;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{idClient}")
     @ResponseStatus(HttpStatus.OK)
-    Callable<ResponseClientEvent> getClient(final UUID id) throws ExecutionException, InterruptedException;
+    Callable<ResponseClientEvent> getClient(final UUID idClient) throws ExecutionException, InterruptedException;
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseClientEvent> updateClient(final UpdateClientEvent event) throws ExecutionException, InterruptedException;
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{idClient}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    Callable<ResponseClientEvent> deleteClient(final UUID id) throws ExecutionException, InterruptedException;
+    Callable<ResponseClientEvent> deleteClient(final UUID idClient) throws ExecutionException, InterruptedException;
 }

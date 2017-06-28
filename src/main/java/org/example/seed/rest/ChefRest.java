@@ -25,15 +25,15 @@ public interface ChefRest {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseChefEvent> createChef(final CreateChefEvent event) throws ExecutionException, InterruptedException;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{idChef}")
     @ResponseStatus(HttpStatus.OK)
-    Callable<ResponseChefEvent> getChef(final UUID id) throws ExecutionException, InterruptedException;
+    Callable<ResponseChefEvent> getChef(final UUID idChef) throws ExecutionException, InterruptedException;
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     Callable<ResponseChefEvent> updateChef(final UpdateChefEvent event) throws ExecutionException, InterruptedException;
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{idChef}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    Callable<ResponseChefEvent> deleteChef(final UUID id) throws ExecutionException, InterruptedException;
+    Callable<ResponseChefEvent> deleteChef(final UUID idChef) throws ExecutionException, InterruptedException;
 }
