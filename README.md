@@ -58,7 +58,7 @@ $ mvn clean spring-boot:run -P production
 
 Only for local environment:
 
-Go to http://localhost:8080/swagger-ui.html to see the Swagger Explorer
+Go to http://localhost:8080/api/swagger-ui.html to see the Swagger Explorer
 
 ## License
 
