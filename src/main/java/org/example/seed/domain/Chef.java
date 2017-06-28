@@ -29,16 +29,16 @@ public class Chef extends Dates {
     @NotNull(groups = {ChefUpdateGroup.class})
     private UUID id;
 
-    @Rfc
+    @Rfc(groups = {ChefUpdateGroup.class})
     @NotNull(groups = {ChefUpdateGroup.class})
     private String rfc;
 
-    @Curp
+    @Curp(groups = {ChefUpdateGroup.class})
     @NotNull(groups = {ChefUpdateGroup.class})
     private String curp;
 
-    @Min(value = 0)
-    @Max(value = 5)
+    @Min(value = 0, groups = {ChefUpdateGroup.class})
+    @Max(value = 5, groups = {ChefUpdateGroup.class})
     @NotNull(groups = {ChefUpdateGroup.class})
     private Float rating;
 

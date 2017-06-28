@@ -28,7 +28,7 @@ public class CustomCORSFilter implements Filter {
 		httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 		httpServletResponse.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, PATCH, POST, PUT");
 		httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
-		httpServletResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with, content-type");
+		httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
 
 		chain.doFilter(request, response);
 	}
