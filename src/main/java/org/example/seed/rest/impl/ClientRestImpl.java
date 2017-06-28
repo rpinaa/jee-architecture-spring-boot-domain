@@ -49,10 +49,10 @@ public class ClientRestImpl implements ClientRest {
     }
 
     @Override
-    public Callable<ResponseClientEvent> getClient(@PathVariable("id") final UUID id)
+    public Callable<ResponseClientEvent> getClient(@PathVariable("idClient") final UUID idClient)
             throws ExecutionException, InterruptedException {
 
-        final RequestClientEvent requestClientEvent = RequestClientEvent.builder().id(id).build();
+        final RequestClientEvent requestClientEvent = RequestClientEvent.builder().id(idClient).build();
 
         final ResponseClientEvent responseClientEvent = this.clientService.requestClient(requestClientEvent).get();
 
@@ -69,10 +69,10 @@ public class ClientRestImpl implements ClientRest {
     }
 
     @Override
-    public Callable<ResponseClientEvent> deleteClient(@PathVariable("id") final UUID id)
+    public Callable<ResponseClientEvent> deleteClient(@PathVariable("idClient") final UUID idClient)
             throws ExecutionException, InterruptedException {
 
-        final DeleteClientEvent deleteClientEvent = DeleteClientEvent.builder().id(id).build();
+        final DeleteClientEvent deleteClientEvent = DeleteClientEvent.builder().id(idClient).build();
 
         final ResponseClientEvent responseClientEvent = this.clientService.deleteClient(deleteClientEvent).get();
 

@@ -49,10 +49,10 @@ public class ChefRestImpl implements ChefRest {
     }
 
     @Override
-    public Callable<ResponseChefEvent> getChef(@PathVariable("id") final UUID id)
+    public Callable<ResponseChefEvent> getChef(@PathVariable("idChef") final UUID idChef)
             throws ExecutionException, InterruptedException {
 
-        final RequestChefEvent requestChefEvent = RequestChefEvent.builder().id(id).build();
+        final RequestChefEvent requestChefEvent = RequestChefEvent.builder().id(idChef).build();
 
         final ResponseChefEvent responseChefEvent = this.chefService.requestChef(requestChefEvent).get();
 
@@ -69,10 +69,10 @@ public class ChefRestImpl implements ChefRest {
     }
 
     @Override
-    public Callable<ResponseChefEvent> deleteChef(@PathVariable("id") final UUID id)
+    public Callable<ResponseChefEvent> deleteChef(@PathVariable("idChef") final UUID idChef)
             throws ExecutionException, InterruptedException {
 
-        final DeleteChefEvent deleteChefEvent = DeleteChefEvent.builder().id(id).build();
+        final DeleteChefEvent deleteChefEvent = DeleteChefEvent.builder().id(idChef).build();
 
         final ResponseChefEvent responseChefEvent = this.chefService.deleteChef(deleteChefEvent).get();
 
