@@ -12,9 +12,9 @@ JEE 7 non-blocking I/O Architecture, using Spring Boot and Domain layer
 - Spring Boot 2.x
 - Spring Boot Security 2.x
 - Spring Boot Actuator 2.x
-- Spring Boot Netty 2.x
-- MyBatis Spring Boot 1.x
+- Spring Boot Undertow 2.x
 - Spring Fox Swagger 2.x
+- MyBatis Spring Boot 1.x
 - AspectJ
 - Lombok
 
