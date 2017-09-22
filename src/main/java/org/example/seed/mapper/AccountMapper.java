@@ -24,7 +24,8 @@ public interface AccountMapper {
                 "NULL, 0,",
                 "CURRENT_TIMESTAMP,",
                 "CURRENT_TIMESTAMP",
-            ")"})
+            ")"
+    })
     @Options(useGeneratedKeys = true)
     int create(final CreateAccountEvent chefEvent);
 
@@ -37,12 +38,14 @@ public interface AccountMapper {
                 "email = #{chef.account.email},",
                 "change_date = CURRENT_TIMESTAMP",
             "WHERE id = #{chef.account.id} ",
-            "AND deleted = 0"})
+            "AND deleted = 0"
+    })
     int update(final UpdateAccountEvent accountEvent);
 
     @Update({"UPDATE account SET",
                 "deleted = 1,",
                 "change_date = CURRENT_TIMESTAMP",
-            "WHERE id = #{id}"})
+            "WHERE id = #{id}"
+    })
     int delete(final UUID id);
 }

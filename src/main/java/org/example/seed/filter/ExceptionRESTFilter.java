@@ -1,6 +1,6 @@
 package org.example.seed.filter;
 
-import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
