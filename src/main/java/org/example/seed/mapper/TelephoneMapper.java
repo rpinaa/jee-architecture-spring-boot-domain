@@ -22,7 +22,8 @@ public interface TelephoneMapper {
                 "#{telephone.lada},",
                 "#{telephone.type},",
                 "#{fk}",
-            ")"})
+            ")"
+    })
     @Options(useGeneratedKeys = true)
     int create(@Param("telephone") final Telephone telephone, @Param("fk") final UUID fk);
 
@@ -38,7 +39,8 @@ public interface TelephoneMapper {
             "lada = #{telephone.lada},",
             "type = #{telephone.type}",
             "WHERE id = #{telephone.id}",
-            "AND fk_id_chef = #{fk}"})
+            "AND fk_id_chef = #{fk}"
+    })
     int update(@Param("telephone") final Telephone telephone, @Param("fk") final UUID fk);
 
     @Delete("DELETE FROM telephone WHERE id = #{id}")

@@ -21,15 +21,16 @@ public interface ChefMapper {
 
     @Insert({"INSERT INTO chef (id, status, rfc, curp, rating, create_date, change_date, deleted, fk_id_account)",
             "VALUES(",
-            "#{chef.id},",
-            "#{chef.status},",
-            "#{chef.rfc},",
-            "#{chef.curp},",
-            "#{chef.rating},",
-            "CURRENT_TIMESTAMP,",
-            "CURRENT_TIMESTAMP, 0,",
-            "#{chef.account.id}",
-            ")"})
+                "#{chef.id},",
+                "#{chef.status},",
+                "#{chef.rfc},",
+                "#{chef.curp},",
+                "#{chef.rating},",
+                "CURRENT_TIMESTAMP,",
+                "CURRENT_TIMESTAMP, 0,",
+                "#{chef.account.id}",
+            ")"
+    })
     @Options(useGeneratedKeys = true)
     int create(final CreateChefEvent chefEvent);
 

@@ -29,7 +29,8 @@ public interface ClientMapper {
                 "#{client.rating},",
                 "CURRENT_TIMESTAMP,",
                 "CURRENT_TIMESTAMP, 0",
-            ")"})
+            ")"
+    })
     @Options(useGeneratedKeys = true)
     int create(final CreateClientEvent clientEvent);
 
@@ -60,7 +61,8 @@ public interface ClientMapper {
                 "rating = #{client.rating},",
                 "change_date = CURRENT_TIMESTAMP",
             "WHERE id = #{client.id}",
-            "AND deleted = 0"})
+            "AND deleted = 0"
+    })
     int update(final UpdateClientEvent clientEvent);
 
     @Update({"UPDATE client SET",
