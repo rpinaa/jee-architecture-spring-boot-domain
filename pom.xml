@@ -57,9 +57,10 @@
         <project.build.testResourcesDirectory>${basedir}/src/test/resources</project.build.testResourcesDirectory>
         <project.build.filterDirectory>${basedir}/src/main/filters</project.build.filterDirectory>
 
+        <java.version>1.8</java.version>
+
         <start-class>org.example.seed.Application</start-class>
 
-        <java.version>1.8</java.version>
         <mybatis.version>1.3.1</mybatis.version>
         <swagger.version>2.2.2</swagger.version>
     </properties>
@@ -102,6 +103,12 @@
             <version>${mybatis.version}</version>
         </dependency>
 
+        <!-- AspectJ -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
         <!-- Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -123,17 +130,26 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- AspectJ -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
-
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>false</optional>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Swagger and Swagger UI -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -145,9 +161,6 @@
             <properties>
                 <project.build.environment>local</project.build.environment>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
 
             <dependencies>
                 <!-- H2 -->
@@ -155,20 +168,6 @@
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
                     <scope>runtime</scope>
-                </dependency>
-
-                <!-- Swagger and Swagger UI -->
-                <dependency>
-                    <groupId>io.springfox</groupId>
-                    <artifactId>springfox-swagger2</artifactId>
-                    <version>${swagger.version}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>io.springfox</groupId>
-                    <artifactId>springfox-swagger-ui</artifactId>
-                    <version>${swagger.version}</version>
-                    <scope>compile</scope>
                 </dependency>
             </dependencies>
         </profile>
@@ -227,9 +226,6 @@
 
     <build>
         <finalName>app</finalName>
-        <filters>
-            <filter>${project.build.filterDirectory}/${project.build.environment}.properties</filter>
-        </filters>
         <resources>
             <resource>
                 <directory>${project.build.resourcesDirectory}</directory>
@@ -260,7 +256,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
+                <version>3.0.2</version>
                 <configuration>
                     <delimiters>
                         <delimiter>@</delimiter>
