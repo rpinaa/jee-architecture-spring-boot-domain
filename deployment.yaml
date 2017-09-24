@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: app-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app-server
+    spec:
+      containers:
+        - name: app-server
+          image: gcr.io/GOOGLE_ID_PROJECT/app-server:ENVIRONMENT_ID
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /info
+              port: 8080
+            initialDelaySeconds: 90
+            timeoutSeconds: 1
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /info
+              port: 8080
+            initialDelaySeconds: 90
+            timeoutSeconds: 1
+            periodSeconds: 10
+          env:
+            - name: CLOUD_CONFIG_PROFILE
+              value: "development"
+          ports:
+            - name: app-port
+              containerPort: 8080
+          resources:
+            limits:
+              cpu: "400m"
+              memory: 500Mi
+            requests:
+              cpu: "400m"
+              memory: 250Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  ports:
+  - port: 32000
+    targetPort: app-port
+  selector:
+    app: app-server
