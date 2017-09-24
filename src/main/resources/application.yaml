@@ -1,0 +1,93 @@
+spring:
+  profiles:
+    active: local
+  jackson:
+    serialization:
+      indent-output: true
+    deserialization:
+      fail-on-unknown-properties: false
+
+info:
+  app:
+    name: jee-architecture-spring-boot-domain
+    description: Chef REST API
+    version: 0.0.1
+
+management:
+  health:
+    status:
+      order: FATAL, DOWN, OUT_OF_SERVICE, UNKNOWN, UP
+  context-path:
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  connection-timeout: 10000
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/plain
+
+endpoints.shutdown.enabled: true
+
+mybatis:
+  typeAliasesPackage: org.example.seed.domain,org.example.seed.event
+  typeHandlersPackage: org.example.seed.mapper.handler
+  configuration:
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 10
+    defaultExecutorType: REUSE
+
+logging.level.ROOT: debug
+
+---
+
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=- 1;DB_CLOSE_ON_EXIT=FALSE
+    schema: classpath*:schema.sql
+    username:
+    password:
+    driverClassName: org.h2.Driver
+
+logging.level.ROOT: info
+
+---
+
+spring:
+  profiles: development
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=- 1;DB_CLOSE_ON_EXIT=FALSE
+    schema: classpath*:schema.sql
+    username:
+    password:
+    driverClassName: org.h2.Driver
+
+logging.level.ROOT: info
+
+---
+
+spring:
+  profiles: staging
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    schema: classpath*:schema.sql
+    username: root
+    password:
+    driverClassName: com.mysql.jdbc.Driver
+
+logging.level.ROOT: warn
+
+---
+
+spring:
+  profiles: production
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    schema: classpath*:schema.sql
+    username: root
+    password:
+    driverClassName: com.mysql.jdbc.Driver
+
+logging.level.ROOT: error
