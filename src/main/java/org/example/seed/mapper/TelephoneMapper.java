@@ -2,7 +2,7 @@ package org.example.seed.mapper;
 
 import org.apache.ibatis.annotations.*;
 import org.example.seed.domain.Telephone;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import java.util.UUID;
  * Created by PINA on 18/06/2017.
  */
 @Mapper
-@Repository
+@Component
 public interface TelephoneMapper {
 
   @Insert({"INSERT INTO telephone (id, name, number, lada, type, fk_id_chef)",

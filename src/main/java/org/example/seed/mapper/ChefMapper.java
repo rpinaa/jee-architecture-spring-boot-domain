@@ -7,7 +7,7 @@ import org.example.seed.event.chef.CreateChefEvent;
 import org.example.seed.event.chef.DeleteChefEvent;
 import org.example.seed.event.chef.RequestChefEvent;
 import org.example.seed.event.chef.UpdateChefEvent;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import java.util.UUID;
  * Created by PINA on 15/06/2017.
  */
 @Mapper
-@Repository
+@Component
 public interface ChefMapper {
 
   @Insert({"INSERT INTO chef (id, status, rfc, curp, rating, create_date, change_date, deleted, fk_id_account)",

@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.example.seed.domain.Account;
 import org.example.seed.event.account.CreateAccountEvent;
 import org.example.seed.event.account.UpdateAccountEvent;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
  * Created by PINA on 15/06/2017.
  */
 @Mapper
-@Repository
+@Component
 public interface AccountMapper {
 
   @Insert({"INSERT INTO account (id, first_name, last_name, email, secret, deleted, create_date, change_date)",
