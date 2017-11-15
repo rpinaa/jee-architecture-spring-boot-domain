@@ -1,9 +1,20 @@
 # jee-architecture-spring-boot-domain
-A JEE 7 non-blocking I/O Architecture using REST architectural pattern with a level 2 of maturity (https://martinfowler.com/articles/richardsonMaturityModel.html).
+A **Java EE 7** non-blocking I/O Architecture using **REST** architectural pattern with a level 2 of maturity as the **Richardson Maturity Model** has described; developing in a **bottom-up** approach.
 
-It uses mapper, service and integration layers in a bottom-up approach to comply the JEE 7 flow. It only has domain objects to keep business rules.
+> **It uses the following layers:**
 
-It also has bean validation, transaction, CDI and security as cross cutting concerns. It provides Swagger UI to document and interact with the REST API exposed.
+> - Database Layer     (RDBMS)
+> - Data Access Layer  (MyBatis)
+> - Business Layer     (Spring)
+> - Integration Layer  (Spring)
+> - Presentation Layer (Swagger)
+
+> **It has the following cross cutting concerns:**
+
+> - CDI          (Spring)
+> - Security     (Spring)
+> - Validations  (BV)
+> - Transactions (Spring)
 
 ## Requirements
 
