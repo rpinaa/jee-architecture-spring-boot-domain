@@ -10,17 +10,15 @@ import org.example.seed.mapper.ChefMapper;
 import org.example.seed.mapper.TelephoneMapper;
 import org.example.seed.service.ChefService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.Future;
 
 /**
  * Created by PINA on 15/06/2017.
@@ -28,105 +26,104 @@ import java.util.concurrent.Future;
 @Service
 public class ChefServiceImpl implements ChefService {
 
-    @Autowired
-    private AccountMapper accountMapper;
+  private final ChefMapper chefMapper;
+  private final AccountMapper accountMapper;
+  private final TelephoneMapper telephoneMapper;
 
-    @Autowired
-    private ChefMapper chefMapper;
+  @Autowired
+  public ChefServiceImpl(
+    final ChefMapper chefMapper, final AccountMapper accountMapper, final TelephoneMapper telephoneMapper
+  ) {
+    this.chefMapper = chefMapper;
+    this.accountMapper = accountMapper;
+    this.telephoneMapper = telephoneMapper;
+  }
 
-    @Autowired
-    private TelephoneMapper telephoneMapper;
+  @Override
+  @Async
+  @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+  public ListenableFuture<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent event) {
 
-    @Override
-    @Async
-    @Cacheable(value = "chefs")
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<CatalogChefEvent> requestAllChefs(final RequestAllChefEvent event) {
+    final int offset = (event.getPage() - 1) * event.getLimit();
+    final int limit = event.getPage() * event.getLimit();
 
-        final int offset = (event.getPage() - 1) * event.getLimit();
-        final int limit = event.getPage() * event.getLimit();
+    final Set<Chef> chefs = this.chefMapper.findMany(new RowBounds(offset, limit));
+    final long total = this.chefMapper.count();
 
-        final Set<Chef> chefs = this.chefMapper.findMany(new RowBounds(offset, limit));
-        final long total = this.chefMapper.count();
+    return new AsyncResult<>(CatalogChefEvent.builder().chefs(chefs).total(total).build());
+  }
 
-        return new AsyncResult<>(CatalogChefEvent.builder().chefs(chefs).total(total).build());
-    }
+  @Override
+  @Async
+  @Transactional(isolation = Isolation.READ_COMMITTED)
+  public ListenableFuture<ResponseChefEvent> createChef(final CreateChefEvent event) {
 
-    @Override
-    @Async
-    @CacheEvict(value = "chefs", allEntries = true)
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> createChef(final CreateChefEvent event) {
+    event.getChef().setStatus(ChefStatus.PRE_REGISTERED);
+    event.getChef().setRating(0F);
 
-        event.getChef().setStatus(ChefStatus.PRE_REGISTERED);
-        event.getChef().setRating(0F);
+    this.accountMapper.create(event);
+    this.chefMapper.create(event);
 
-        this.accountMapper.create(event);
-        this.chefMapper.create(event);
+    return new AsyncResult<>(null);
+  }
 
-        return new AsyncResult<>(null);
-    }
+  @Override
+  @Async
+  @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+  public ListenableFuture<ResponseChefEvent> requestChef(final RequestChefEvent event) {
 
-    @Override
-    @Async
-    @Cacheable(value = "chefs")
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Future<ResponseChefEvent> requestChef(final RequestChefEvent event) {
+    return new AsyncResult<>(ResponseChefEvent.builder()
+      .chef(this.chefMapper.findOne(event))
+      .build());
+  }
 
-        return new AsyncResult<>(ResponseChefEvent.builder()
-                .chef(this.chefMapper.findOne(event))
-                .build());
-    }
+  @Override
+  @Async
+  @Transactional(isolation = Isolation.READ_COMMITTED)
+  public ListenableFuture<ResponseChefEvent> updateChef(final UpdateChefEvent event) {
 
-    @Override
-    @Async
-    @CacheEvict(value = "chefs", allEntries = true)
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> updateChef(final UpdateChefEvent event) {
+    return Optional.of(this.chefMapper.findAccountUUID(event.getChef().getId()))
+      .map(id -> {
+        final Set<Telephone> telephones = this.telephoneMapper
+          .findManyByChef(event.getChef().getId());
 
-        return Optional.of(this.chefMapper.findAccountUUID(event.getChef().getId()))
-                .map(id -> {
-                    final Set<Telephone> telephones = this.telephoneMapper
-                            .findManyByChef(event.getChef().getId());
+        event.getChef().getTelephones()
+          .parallelStream()
+          .filter(t -> telephones
+            .parallelStream()
+            .noneMatch(s -> t.getNumber().equals(s.getNumber())))
+          .forEach(t -> this.telephoneMapper.create(t, event.getChef().getId()));
 
-                    event.getChef().getTelephones()
-                            .parallelStream()
-                            .filter(t -> telephones
-                                    .parallelStream()
-                                    .noneMatch(s -> t.getNumber().equals(s.getNumber())))
-                            .forEach(t -> this.telephoneMapper.create(t, event.getChef().getId()));
+        event.getChef().getTelephones()
+          .parallelStream()
+          .filter(t -> telephones
+            .parallelStream()
+            .anyMatch(s -> t.getNumber().equals(s.getNumber())))
+          .forEach(t -> this.telephoneMapper.update(t, event.getChef().getId()));
 
-                    event.getChef().getTelephones()
-                            .parallelStream()
-                            .filter(t -> telephones
-                                    .parallelStream()
-                                    .anyMatch(s -> t.getNumber().equals(s.getNumber())))
-                            .forEach(t -> this.telephoneMapper.update(t, event.getChef().getId()));
+        this.accountMapper.update(event);
+        this.chefMapper.update(event);
 
-                    this.accountMapper.update(event);
-                    this.chefMapper.update(event);
+        return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
+      })
+      .orElseThrow(RuntimeException::new);
+  }
 
-                    return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
-                })
-                .orElseThrow(RuntimeException::new);
-    }
+  @Override
+  @Async
+  @Transactional(isolation = Isolation.READ_COMMITTED)
+  public ListenableFuture<ResponseChefEvent> deleteChef(final DeleteChefEvent event) {
 
-    @Override
-    @Async
-    @CacheEvict(value = "chefs", allEntries = true)
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Future<ResponseChefEvent> deleteChef(final DeleteChefEvent event) {
+    return Optional.of(this.chefMapper.findAccountUUID(event.getId()))
+      .map(id -> {
+        this.chefMapper.delete(event);
+        this.accountMapper.delete(id);
+        this.telephoneMapper.findManyByChef(event.getId())
+          .parallelStream()
+          .forEach(t -> this.telephoneMapper.delete(t.getId()));
 
-        return Optional.of(this.chefMapper.findAccountUUID(event.getId()))
-                .map(id -> {
-                    this.chefMapper.delete(event);
-                    this.accountMapper.delete(id);
-                    this.telephoneMapper.findManyByChef(event.getId())
-                            .parallelStream()
-                            .forEach(t -> this.telephoneMapper.delete(t.getId()));
-
-                    return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
-                })
-                .orElseThrow(RuntimeException::new);
-    }
+        return new AsyncResult<>(ResponseChefEvent.builder().chef(null).build());
+      })
+      .orElseThrow(RuntimeException::new);
+  }
 }

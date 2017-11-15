@@ -1,21 +1,20 @@
 package org.example.seed.service;
 
 import org.example.seed.event.client.*;
-
-import java.util.concurrent.Future;
+import org.springframework.util.concurrent.ListenableFuture;
 
 /**
  * Created by PINA on 16/06/2017.
  */
 public interface ClientService {
 
-    Future<CatalogClientEvent> requestAllClients(final RequestAllClientEvent event);
+  ListenableFuture<CatalogClientEvent> requestAllClients(final RequestAllClientEvent event);
 
-    Future<ResponseClientEvent> createClient(final CreateClientEvent event);
+  ListenableFuture<ResponseClientEvent> createClient(final CreateClientEvent event);
 
-    Future<ResponseClientEvent> requestClient(final RequestClientEvent event);
+  ListenableFuture<ResponseClientEvent> requestClient(final RequestClientEvent event);
 
-    Future<ResponseClientEvent> updateClient(final UpdateClientEvent event);
+  ListenableFuture<ResponseClientEvent> updateClient(final UpdateClientEvent event);
 
-    Future<ResponseClientEvent> deleteClient(final DeleteClientEvent event);
+  ListenableFuture<ResponseClientEvent> deleteClient(final DeleteClientEvent event);
 }
