@@ -7,7 +7,7 @@ import org.example.seed.event.client.CreateClientEvent;
 import org.example.seed.event.client.DeleteClientEvent;
 import org.example.seed.event.client.RequestClientEvent;
 import org.example.seed.event.client.UpdateClientEvent;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import java.util.UUID;
  * Created by PINA on 16/06/2017.
  */
 @Mapper
-@Repository
+@Component
 public interface ClientMapper {
 
   @Insert({"INSERT INTO client (id, status, first_name, last_name, email, rating, create_date, change_date, deleted)",
