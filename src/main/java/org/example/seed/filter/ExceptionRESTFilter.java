@@ -15,10 +15,10 @@ import java.io.IOException;
 @ControllerAdvice
 public class ExceptionRESTFilter {
 
-    @ExceptionHandler(RuntimeException.class)
-    void serviceException(final HttpServletRequest request, final HttpServletResponse response, final RuntimeException exception) throws IOException {
+  @ExceptionHandler(RuntimeException.class)
+  void serviceException(final HttpServletRequest request, final HttpServletResponse response, final RuntimeException exception) throws IOException {
 
-        request.setAttribute(DefaultErrorAttributes.class.getName(), null);
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
-    }
+    request.setAttribute(DefaultErrorAttributes.class.getName(), null);
+    response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
+  }
 }

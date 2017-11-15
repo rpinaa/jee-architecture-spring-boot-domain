@@ -1,11 +1,13 @@
 package org.example.seed.config;
 
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -20,27 +22,32 @@ import java.time.LocalDate;
 @Configuration
 @EnableSwagger2
 @Profile("local")
-public class SwaggerConfig extends WebFluxAutoConfiguration {
+public class SwaggerConfig extends WebMvcConfigurerAdapter {
 
-    @Bean
-    public Docket configuration() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors
-                        .basePackage("org.example.seed.rest"))
-                .paths(PathSelectors.any())
-                .build()
-                .directModelSubstitute(LocalDate.class, String.class)
-                .genericModelSubstitutes(ResponseEntity.class);
-    }
+  @Override
+  public void configureContentNegotiation(final ContentNegotiationConfigurer configurer) {
+    configurer.defaultContentType(MediaType.APPLICATION_JSON);
+  }
 
-    public void addResourceHandlers(final ResourceHandlerRegistry resourceHandlerRegistry) {
-        resourceHandlerRegistry
-                .addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
+  @Override
+  public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 
-        resourceHandlerRegistry
-                .addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
+    registry.addResourceHandler("swagger-ui.html")
+      .addResourceLocations("classpath:/META-INF/resources/");
+
+    registry.addResourceHandler("/webjars/**")
+      .addResourceLocations("classpath:/META-INF/resources/webjars/");
+  }
+
+  @Bean
+  public Docket configuration() {
+    return new Docket(DocumentationType.SWAGGER_2)
+      .select()
+      .apis(RequestHandlerSelectors
+        .basePackage("org.example.seed.rest"))
+      .paths(PathSelectors.any())
+      .build()
+      .directModelSubstitute(LocalDate.class, String.class)
+      .genericModelSubstitutes(ResponseEntity.class);
+  }
 }

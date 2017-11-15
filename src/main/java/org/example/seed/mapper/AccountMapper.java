@@ -15,37 +15,37 @@ import java.util.UUID;
 @Repository
 public interface AccountMapper {
 
-    @Insert({"INSERT INTO account (id, first_name, last_name, email, secret, deleted, create_date, change_date)",
-            "VALUES(",
-                "#{chef.account.id},",
-                "#{chef.account.firstName},",
-                "#{chef.account.lastName},",
-                "#{chef.account.email},",
-                "NULL, 0,",
-                "CURRENT_TIMESTAMP,",
-                "CURRENT_TIMESTAMP",
-            ")"
-    })
-    @Options(useGeneratedKeys = true)
-    int create(final CreateAccountEvent chefEvent);
+  @Insert({"INSERT INTO account (id, first_name, last_name, email, secret, deleted, create_date, change_date)",
+    "VALUES(",
+    "#{chef.account.id},",
+    "#{chef.account.firstName},",
+    "#{chef.account.lastName},",
+    "#{chef.account.email},",
+    "NULL, 0,",
+    "CURRENT_TIMESTAMP,",
+    "CURRENT_TIMESTAMP",
+    ")"
+  })
+  @Options(useGeneratedKeys = true)
+  int create(final CreateAccountEvent chefEvent);
 
-    @Select("SELECT * FROM account WHERE id = #{id} AND deleted = 0")
-    Account findOne(final String id);
+  @Select("SELECT * FROM account WHERE id = #{id} AND deleted = 0")
+  Account findOne(final String id);
 
-    @Update({"UPDATE account SET",
-                "first_name = #{chef.account.firstName},",
-                "last_name = #{chef.account.lastName},",
-                "email = #{chef.account.email},",
-                "change_date = CURRENT_TIMESTAMP",
-            "WHERE id = #{chef.account.id} ",
-            "AND deleted = 0"
-    })
-    int update(final UpdateAccountEvent accountEvent);
+  @Update({"UPDATE account SET",
+    "first_name = #{chef.account.firstName},",
+    "last_name = #{chef.account.lastName},",
+    "email = #{chef.account.email},",
+    "change_date = CURRENT_TIMESTAMP",
+    "WHERE id = #{chef.account.id} ",
+    "AND deleted = 0"
+  })
+  int update(final UpdateAccountEvent accountEvent);
 
-    @Update({"UPDATE account SET",
-                "deleted = 1,",
-                "change_date = CURRENT_TIMESTAMP",
-            "WHERE id = #{id}"
-    })
-    int delete(final UUID id);
+  @Update({"UPDATE account SET",
+    "deleted = 1,",
+    "change_date = CURRENT_TIMESTAMP",
+    "WHERE id = #{id}"
+  })
+  int delete(final UUID id);
 }

@@ -1,4 +1,4 @@
-package org.example.seed.logger;
+package org.example.seed.aspect;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,12 +18,12 @@ import java.util.concurrent.Callable;
  */
 @Aspect
 @Component
-public class RESTAspectLogger {
+public class RESTLoggerAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public RESTAspectLogger() {
+    public RESTLoggerAspect() {
         this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 

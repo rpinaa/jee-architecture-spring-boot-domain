@@ -9,6 +9,6 @@ import java.util.Date;
  */
 @Data
 public class Dates {
-    private Date createDate;
-    private Date changeDate;
+  private Date createDate;
+  private Date changeDate;
 }

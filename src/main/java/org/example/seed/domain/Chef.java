@@ -22,33 +22,33 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class Chef extends Dates {
 
-    public Chef() {
-        this.id = UUID.randomUUID();
-    }
+  public Chef() {
+    this.id = UUID.randomUUID();
+  }
 
-    @NotNull(groups = {ChefUpdateGroup.class})
-    private UUID id;
+  @NotNull(groups = {ChefUpdateGroup.class})
+  private UUID id;
 
-    @Rfc(groups = {ChefUpdateGroup.class})
-    @NotNull(groups = {ChefUpdateGroup.class})
-    private String rfc;
+  @Rfc(groups = {ChefUpdateGroup.class})
+  @NotNull(groups = {ChefUpdateGroup.class})
+  private String rfc;
 
-    @Curp(groups = {ChefUpdateGroup.class})
-    @NotNull(groups = {ChefUpdateGroup.class})
-    private String curp;
+  @Curp(groups = {ChefUpdateGroup.class})
+  @NotNull(groups = {ChefUpdateGroup.class})
+  private String curp;
 
-    @Min(value = 0, groups = {ChefUpdateGroup.class})
-    @Max(value = 5, groups = {ChefUpdateGroup.class})
-    @NotNull(groups = {ChefUpdateGroup.class})
-    private Float rating;
+  @Min(value = 0, groups = {ChefUpdateGroup.class})
+  @Max(value = 5, groups = {ChefUpdateGroup.class})
+  @NotNull(groups = {ChefUpdateGroup.class})
+  private Float rating;
 
-    @NotNull(groups = {ChefUpdateGroup.class})
-    private ChefStatus status;
+  @NotNull(groups = {ChefUpdateGroup.class})
+  private ChefStatus status;
 
-    @Valid
-    private Account account;
+  @Valid
+  private Account account;
 
-    @Valid
-    @NotEmpty(groups = {ChefUpdateGroup.class})
-    private Set<Telephone> telephones;
+  @Valid
+  @NotEmpty(groups = {ChefUpdateGroup.class})
+  private Set<Telephone> telephones;
 }

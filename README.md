@@ -1,5 +1,9 @@
 # jee-architecture-spring-boot-domain
-JEE 7 non-blocking I/O Architecture, using Spring Boot and Domain layer
+A JEE 7 non-blocking I/O Architecture using REST architectural pattern with a level 2 of maturity (https://martinfowler.com/articles/richardsonMaturityModel.html).
+
+It uses mapper, service and integration layers in a bottom-up approach to comply the JEE 7 flow. It only has domain objects to keep business rules.
+
+It also has bean validation, transaction, CDI and security as cross cutting concerns. It provides Swagger UI to document and interact with the REST API exposed.
 
 ## Requirements
 
@@ -14,8 +18,8 @@ JEE 7 non-blocking I/O Architecture, using Spring Boot and Domain layer
 - Spring Boot Security 2.x
 - Spring Boot Actuator 2.x
 - Spring Boot Undertow 2.x
-- Spring Fox Swagger 2.x
 - MyBatis Spring Boot 1.x
+- Spring Fox Swagger 2.x
 
 ## Plugins
 

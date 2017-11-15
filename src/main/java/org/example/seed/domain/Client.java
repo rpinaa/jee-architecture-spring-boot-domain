@@ -21,33 +21,33 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class Client extends Dates {
 
-    public Client() {
-        this.id = UUID.randomUUID();
-    }
+  public Client() {
+    this.id = UUID.randomUUID();
+  }
 
-    @NotNull(groups = {ClientUpdateGroup.class})
-    private UUID id;
+  @NotNull(groups = {ClientUpdateGroup.class})
+  private UUID id;
 
-    @Email(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    private String email;
+  @Email(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  private String email;
 
-    @Size(min = 2, max = 80, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    private String firstName;
+  @Size(min = 2, max = 80, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  private String firstName;
 
-    @Size(min = 2, max = 80, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    private String lastName;
+  @Size(min = 2, max = 80, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  private String lastName;
 
-    @Min(value = 0, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    @Max(value = 5, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
-    private Float rating;
+  @Min(value = 0, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  @Max(value = 5, groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  @NotNull(groups = {ClientCreateGroup.class, ClientUpdateGroup.class})
+  private Float rating;
 
-    @NotNull(groups = {ClientUpdateGroup.class})
-    private ClientStatus status;
+  @NotNull(groups = {ClientUpdateGroup.class})
+  private ClientStatus status;
 
-    @Valid
-    private Telephone telephone;
+  @Valid
+  private Telephone telephone;
 }

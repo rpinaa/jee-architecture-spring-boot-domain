@@ -16,25 +16,25 @@ import java.util.UUID;
 @Data
 public class Telephone {
 
-    public Telephone() {
-        this.id = UUID.randomUUID();
-    }
+  public Telephone() {
+    this.id = UUID.randomUUID();
+  }
 
-    @NotNull(groups = {ClientUpdateGroup.class, ChefUpdateGroup.class})
-    private UUID id;
+  @NotNull(groups = {ClientUpdateGroup.class, ChefUpdateGroup.class})
+  private UUID id;
 
-    @Size(min = 2, max = 15, groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    private String name;
+  @Size(min = 2, max = 15, groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
+  @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
+  private String name;
 
-    @Size(min = 5, max = 15, groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    private String number;
+  @Size(min = 5, max = 15, groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
+  @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
+  private String number;
 
-    @Size(min = 2, max = 10, groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    private String lada;
+  @Size(min = 2, max = 10, groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
+  @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
+  private String lada;
 
-    @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
-    private TelephoneType type;
+  @NotNull(groups = {ClientCreateGroup.class, ChefUpdateGroup.class})
+  private TelephoneType type;
 }
